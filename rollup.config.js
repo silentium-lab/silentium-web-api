@@ -2,7 +2,7 @@ import dts from "rollup-plugin-dts";
 import esbuild from "rollup-plugin-esbuild";
 import terser from "@rollup/plugin-terser";
 
-const name = "dist/patron-web-api";
+const name = "dist/silentium-web-api";
 
 const bundle = (config) => ({
   ...config,

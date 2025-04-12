@@ -55,6 +55,6 @@
     }
   },
   "dependencies": {
-    "silentium-oop": "^1.45.0"
+    "silentium": "^0.0.2"
   }
 }
