@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### 0.0.1 (2025-04-12)
+
+
+### Features
+
+* **main:** before release check ([d3ce79c](https://github.com/silentium-lab/silentium-web-api/commit/d3ce79cee31152c2bf6ce1f750e0881cfc000e77))
+
+
+### Bug Fixes
+
+* **main:** fix dependency version ([9d1599b](https://github.com/silentium-lab/silentium-web-api/commit/9d1599be1577e5e29cc2564c0a5f958d22e1f7d7))
+* **main:** no deps on patron ([b4dceb6](https://github.com/silentium-lab/silentium-web-api/commit/b4dceb61c1092d0b3a3c1b377cb48e43df290634))
+
 ## [1.16.0](https://github.com/kosukhin/patron-web-api/compare/v1.15.0...v1.16.0) (2025-04-05)
 
 
