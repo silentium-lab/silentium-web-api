@@ -1,4 +1,4 @@
-import { Guest, SourceWithPool } from "patron-oop";
+import { Guest, SourceWithPool } from "silentium";
 
 interface FetchRequestType extends RequestInit {
   url: string;

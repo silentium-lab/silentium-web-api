@@ -5,7 +5,7 @@ import {
   SourceObjectType,
   SourceType,
   value,
-} from "patron-oop";
+} from "silentium";
 
 export class Element implements SourceObjectType<HTMLElement> {
   public constructor(private selector: SourceType<string>) {}

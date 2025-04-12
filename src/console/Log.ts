@@ -1,9 +1,9 @@
-import { GuestObjectType } from "patron-oop";
+import { GuestObjectType } from "silentium";
 
 export class Log implements GuestObjectType<unknown> {
   public constructor(private title: string = "") {}
 
-  public introduction(): "guest" | "patron" {
+  public introduction(): "patron" {
     return "patron";
   }
 

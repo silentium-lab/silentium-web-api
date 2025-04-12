@@ -5,7 +5,7 @@ import {
   SourceObjectType,
   SourceType,
   value,
-} from "patron-oop";
+} from "silentium";
 
 export class Attribute implements SourceObjectType<string> {
   public constructor(

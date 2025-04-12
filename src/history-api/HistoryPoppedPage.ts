@@ -1,4 +1,4 @@
-import { give, GuestType } from "patron-oop";
+import { give, GuestType } from "silentium";
 
 export class HistoryPoppedPage {
   public constructor(private pageSource: GuestType<string>) {}

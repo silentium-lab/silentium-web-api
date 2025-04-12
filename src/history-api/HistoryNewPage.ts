@@ -1,4 +1,4 @@
-import { GuestObjectType } from "patron-oop";
+import { GuestObjectType } from "silentium";
 
 export class HistoryNewPage implements GuestObjectType<string> {
   public give(url: string) {

@@ -1,4 +1,4 @@
-import { GuestObjectType } from "patron-oop";
+import { GuestObjectType } from "silentium";
 
 export class StyleInstalled implements GuestObjectType<string> {
   public give(value: string): this {
