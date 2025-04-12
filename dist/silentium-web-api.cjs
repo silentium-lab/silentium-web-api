@@ -1,6 +1,6 @@
 'use strict';
 
-var patronOop = require('patron-oop');
+var silentium = require('silentium');
 
 class HistoryPoppedPage {
   constructor(pageSource) {
@@ -10,7 +10,7 @@ class HistoryPoppedPage {
     window.addEventListener("popstate", (event) => {
       const { state } = event;
       if (state?.url) {
-        patronOop.give(state.url, this.pageSource);
+        silentium.give(state.url, this.pageSource);
       }
     });
   }
@@ -40,10 +40,10 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, key + "" , value);
 class Fetched {
   constructor(errors) {
     this.errors = errors;
-    __publicField(this, "source", new patronOop.SourceWithPool());
+    __publicField(this, "source", new silentium.SourceWithPool());
   }
   do() {
-    return new patronOop.Guest((request) => {
+    return new silentium.Guest((request) => {
       fetch(request.url, request).then((resp) => {
         if (!resp.ok) {
           return Promise.reject(new Error("Error of status " + resp.status));
@@ -69,12 +69,12 @@ class Element {
     this.selector = selector;
   }
   value(guest) {
-    patronOop.value(
+    silentium.value(
       this.selector,
-      new patronOop.GuestCast(guest, (selectorContent) => {
+      new silentium.GuestCast(guest, (selectorContent) => {
         const element = document.querySelector(selectorContent);
         if (element) {
-          patronOop.give(element, guest);
+          silentium.give(element, guest);
         } else {
           const targetNode = document.body;
           const config = { childList: true, subtree: true };
@@ -83,7 +83,7 @@ class Element {
               if (mutation.type === "childList") {
                 const element2 = document.querySelector(selectorContent);
                 if (element2) {
-                  patronOop.give(element2, guest);
+                  silentium.give(element2, guest);
                   observer.disconnect();
                   break;
                 }
@@ -105,10 +105,10 @@ class Attribute {
     this.defaultValue = defaultValue;
   }
   value(guest) {
-    patronOop.value(
+    silentium.value(
       this.element,
-      new patronOop.GuestCast(guest, (el) => {
-        patronOop.give(el.getAttribute(this.attrName) || this.defaultValue, guest);
+      new silentium.GuestCast(guest, (el) => {
+        silentium.give(el.getAttribute(this.attrName) || this.defaultValue, guest);
       })
     );
     return this;

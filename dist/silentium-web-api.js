@@ -1,4 +1,4 @@
-import { give, SourceWithPool, Guest, value, GuestCast } from 'patron-oop';
+import { give, SourceWithPool, Guest, value, GuestCast } from 'silentium';
 
 class HistoryPoppedPage {
   constructor(pageSource) {
