@@ -1,13 +1,7 @@
-import { CurrentPage, Link, Page, Router } from "patron-components";
-import { Patron, PatronOnce, SourceWithPool, sourceOf } from "patron-oop";
+import { Patron, PatronOnce, SourceWithPool, sourceOf } from "silentium";
+import { Attribute, Element, Fetched, StyleInstalled } from "silentium-web-api";
+import { CurrentPage, Link, Page, Router } from "silentium-components";
 import { StyleFetched } from "../lib/StyleFetched.mjs";
-import {
-  Fetched,
-  Element,
-  Attribute,
-  Log,
-  StyleInstalled,
-} from "patron-web-api";
 
 new StyleFetched(
   "https://raw.githubusercontent.com/kosukhin/patorn-design-system/refs/heads/main/dist/assets/index.css",
@@ -15,7 +9,9 @@ new StyleFetched(
 
 const routing = new Router(".loader", ".page-area", ".menu");
 
-const [basePath] = location.href.replace(location.origin, "").split("#");
+const [basePath] = window.location.href
+  .replace(window.location.origin, "")
+  .split("#");
 const cleanBasePath = basePath.replace(/[^/]+\.html$/, "");
 const currentPage = new CurrentPage();
 const basePathSource = new SourceWithPool(
@@ -60,7 +56,7 @@ routesTransport.result().value(
           url: "/",
           template: "pages/index.html",
           aliases: [basePath, `${basePath}index.html`, ""],
-          page: new Page("Patron Components"),
+          page: new Page("Silentium Web API"),
         },
         ...dynamicRoutes,
         {

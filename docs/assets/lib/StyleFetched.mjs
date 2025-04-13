@@ -4,13 +4,14 @@ export class StyleFetched {
   }
 
   install() {
-    fetch(this.styleUrl)
+    window
+      .fetch(this.styleUrl)
       .then((r) => r.text())
       .then((styleContent) => {
-        const styleEl = document.createElement("style");
+        const styleEl = window.document.createElement("style");
         styleEl.textContent = styleContent;
-        document.head.appendChild(styleEl);
-        document.body.classList.remove("body-loading");
+        window.document.head.appendChild(styleEl);
+        window.document.body.classList.remove("body-loading");
       });
   }
 }

@@ -17,82 +17,9 @@
     />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.9.0/highlightjs-line-numbers.min.js"></script>
-    <link
-      rel="apple-touch-icon"
-      sizes="57x57"
-      href="./assets/favicon/apple-icon-57x57.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="60x60"
-      href="./assets/favicon/apple-icon-60x60.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="72x72"
-      href="./assets/favicon/apple-icon-72x72.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="76x76"
-      href="./assets/favicon/apple-icon-76x76.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="114x114"
-      href="./assets/favicon/apple-icon-114x114.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="120x120"
-      href="./assets/favicon/apple-icon-120x120.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="144x144"
-      href="./assets/favicon/apple-icon-144x144.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="152x152"
-      href="./assets/favicon/apple-icon-152x152.png"
-    />
-    <link
-      rel="apple-touch-icon"
-      sizes="180x180"
-      href="./assets/favicon/apple-icon-180x180.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="192x192"
-      href="./assets/favicon/android-icon-192x192.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="32x32"
-      href="./assets/favicon/favicon-32x32.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="96x96"
-      href="./assets/favicon/favicon-96x96.png"
-    />
-    <link
-      rel="icon"
-      type="image/png"
-      sizes="16x16"
-      href="./assets/favicon/favicon-16x16.png"
-    />
     <meta
       name="msapplication-TileColor"
       content="#ffffff"
-    />
-    <meta
-      name="msapplication-TileImage"
-      content="./assets/favicon/ms-icon-144x144.png"
     />
     <meta
       name="theme-color"
@@ -102,19 +29,20 @@
       rel="stylesheet"
       href="./assets/css/base.css"
     />
+    <link rel="icon" href="./favicon.ico" type="image/x-icon" />
     <script type="importmap">
       {
         "imports": {
-          "patron-oop": "https://cdn.jsdelivr.net/npm/patron-oop@1.46.0/dist/patron.min.mjs",
-          "patron-web-api": "https://cdn.jsdelivr.net/npm/patron-web-api@1.16.0/dist/patron-web-api.min.mjs",
-          "patron-components": "https://cdn.jsdelivr.net/npm/patron-oop-components@1.20.0/dist/patron-components.min.mjs"
+          "silentium": "https://cdn.jsdelivr.net/npm/silentium@0.0.2/dist/silentium.min.mjs",
+          "silentium-web-api": "https://cdn.jsdelivr.net/npm/silentium-web-api@0.0.1/dist/silentium-web-api.min.mjs",
+          "silentium-components": "https://cdn.jsdelivr.net/npm/silentium-components@0.0.1/dist/silentium-components.min.mjs"
         }
       }
     </script>
   </head>
 
   <body class="flex flex-col h-full global-body body-loading">
-    <div class="style-link" data-style="https://raw.githubusercontent.com/kosukhin/patorn-design-system/refs/heads/main/custom.css"></div>
+    <div class="style-link" data-style="https://raw.githubusercontent.com/silentium-lab/silentium/refs/heads/main/docs/assets/css/custom.css"></div>
     <header class="text-gray-600 body-font">
       <div
         class="container mx-auto flex flex-wrap p-5 flex-col md:flex-row items-center menu"
@@ -122,8 +50,9 @@
         <div
           class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0"
         >
-        <a href="/" class="text-xl flex items-center active">
-          Patron Web API
+        <a href="/" class="text-xl gap-2 flex items-center active">
+          <img src="./assets/img/logo.svg" width="40" height="44" />
+          Silentium Web API
         </a>
         </div>
         <nav
@@ -182,21 +111,21 @@
                 <a
                   href="https://kosukhin.github.io/patron/#/"
                   target="_blank"
-                  >Patron</a
+                  >Silentium</a
                 >
               </div>
               <div class="flex gap-1 items-center">
                 <a
                   href="https://kosukhin.github.io/patron-components/"
                   target="_blank"
-                  >Patron Components</a
+                  >Silentium Components</a
                 >
               </div>
               <div class="flex gap-1 items-center">
                 <a
                   href="https://kosukhin.github.io/patron-web-api.site/"
                   target="_blank"
-                  >Patron Редактор схем</a
+                  >Silentium Редактор схем</a
                 >
               </div>
             </div>
@@ -208,19 +137,18 @@
           class="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row"
         >
           <p class="text-gray-500 text-sm">
-            © 2025 Patron —
+            © 2025 Silentium —
             <a
               href="https://github.com/kosukhin/patron"
               class="text-gray-600 ml-1"
               target="_blank"
               rel="noopener noreferrer"
-              >@patron-oop</a
+              >@silentium</a
             >
           </p>
           <span
             class="sm:ml-auto sm:mt-0 mt-2 sm:w-auto w-full sm:text-left text-center text-gray-500 text-sm"
           >
-            patron web api
           </span>
         </div>
       </div>
