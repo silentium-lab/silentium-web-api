@@ -1,4 +1,4 @@
-import { give, SourceWithPool, Guest, value, GuestCast } from 'silentium';
+import { give, SourceChangeable, Guest, value, GuestCast } from 'silentium';
 
 class HistoryPoppedPage {
   constructor(pageSource) {
@@ -38,7 +38,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, key + "" , value);
 class Fetched {
   constructor(errors) {
     this.errors = errors;
-    __publicField(this, "source", new SourceWithPool());
+    __publicField(this, "source", new SourceChangeable());
   }
   do() {
     return new Guest((request) => {

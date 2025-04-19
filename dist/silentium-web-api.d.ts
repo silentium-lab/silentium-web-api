@@ -1,4 +1,4 @@
-import { GuestType, GuestObjectType, Guest, SourceWithPool, SourceObjectType, SourceType } from 'silentium';
+import { GuestType, GuestObjectType, Guest, SourceChangeable, SourceObjectType, SourceType } from 'silentium';
 
 declare class HistoryPoppedPage {
     private pageSource;
@@ -29,7 +29,7 @@ declare class Fetched<T> {
     private source;
     constructor(errors: Guest<Error>);
     do(): Guest<FetchRequestType>;
-    result(): SourceWithPool<T>;
+    result(): SourceChangeable<T>;
 }
 
 declare class Element implements SourceObjectType<HTMLElement> {
@@ -57,4 +57,5 @@ declare class Log implements GuestObjectType<unknown> {
     give(value: unknown): this;
 }
 
-export { Attribute, Element, Fetched, HistoryNewPage, type HistoryPageDocument, HistoryPoppedPage, Log, StyleInstalled };
+export { Attribute, Element, Fetched, HistoryNewPage, HistoryPoppedPage, Log, StyleInstalled };
+export type { HistoryPageDocument };

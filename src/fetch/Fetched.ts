@@ -1,4 +1,4 @@
-import { Guest, SourceWithPool } from "silentium";
+import { Guest, SourceChangeable } from "silentium";
 
 interface FetchRequestType extends RequestInit {
   url: string;
@@ -10,7 +10,7 @@ interface FetchRequestType extends RequestInit {
  * https://kosukhin.github.io/patron-web-api/#/fetch/fetched
  */
 export class Fetched<T> {
-  private source = new SourceWithPool<T>();
+  private source = new SourceChangeable<T>();
 
   public constructor(private errors: Guest<Error>) {}
 

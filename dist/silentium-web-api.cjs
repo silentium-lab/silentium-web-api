@@ -40,7 +40,7 @@ var __publicField = (obj, key, value) => __defNormalProp(obj, key + "" , value);
 class Fetched {
   constructor(errors) {
     this.errors = errors;
-    __publicField(this, "source", new silentium.SourceWithPool());
+    __publicField(this, "source", new silentium.SourceChangeable());
   }
   do() {
     return new silentium.Guest((request) => {
