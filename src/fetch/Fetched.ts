@@ -1,41 +1,54 @@
-import { Guest, SourceChangeable } from "silentium";
+import {
+  give,
+  GuestType,
+  patron,
+  sourceAll,
+  sourceChangeable,
+  SourceType,
+  value,
+} from "silentium";
 
-interface FetchRequestType extends RequestInit {
-  url: string;
-  asJson: boolean;
-}
+type FetchType = { fetch: (input: RequestInfo) => Promise<Response> };
 
 /**
  * Wrapper around FetchAPI
  * https://kosukhin.github.io/patron-web-api/#/fetch/fetched
  */
-export class Fetched<T> {
-  private source = new SourceChangeable<T>();
+export const fetched = <T>(
+  request: SourceType<Partial<RequestInfo>>,
+  errors: GuestType<Error>,
+  fetch: SourceType<FetchType>,
+) => {
+  const all = sourceAll<[RequestInfo, FetchType]>([request, fetch]);
+  const result = sourceChangeable<T>();
 
-  public constructor(private errors: Guest<Error>) {}
+  value(
+    all,
+    patron(([req, fetch]) => {
+      fetch
+        .fetch(req)
+        .then((response) => {
+          let readableResponse;
+          if (response.headers.get("Content-Type") === "application/json") {
+            readableResponse = response.json();
+          } else {
+            readableResponse = response.text();
+          }
 
-  public do() {
-    return new Guest<FetchRequestType>((request) => {
-      fetch(request.url, request)
-        .then((resp) => {
-          if (!resp.ok) {
-            return Promise.reject(new Error("Error of status " + resp.status));
+          if (!response.ok) {
+            return Promise.reject(readableResponse);
           }
-          if (request.asJson) {
-            return resp.json();
-          }
-          return resp.text();
+
+          return readableResponse;
         })
         .then((content) => {
-          this.source.give(content);
+          give(content, result);
         })
-        .catch((e) => {
-          this.errors.give(e);
+        .catch((error) => {
+          give(error, errors);
         });
-    });
-  }
+    }),
+  );
 
-  public result() {
-    return this.source;
-  }
-}
+  return result;
+};
