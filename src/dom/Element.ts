@@ -26,11 +26,9 @@ export const element = (
   documentSrc: SourceType<Document>,
   createObserver?: PersonalType<MutationAware>,
 ): SourceType<HTMLElement> => {
-  const all = sourceAll([selectorSrc, documentSrc]);
-
   return (guest: GuestType<HTMLElement>) => {
     value(
-      all,
+      sourceAll([selectorSrc, documentSrc]),
       guestCast(guest, ([selector, document]) => {
         const element = document.querySelector(selector);
         if (element) {

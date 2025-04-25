@@ -3,7 +3,7 @@ import {
   GuestType,
   patron,
   sourceAll,
-  sourceChangeable,
+  sourceOf,
   SourceType,
   value,
 } from "silentium";
@@ -19,11 +19,10 @@ export const fetched = <T>(
   errors: GuestType<Error>,
   fetch: SourceType<FetchType>,
 ) => {
-  const all = sourceAll([request, fetch]);
-  const result = sourceChangeable<T>();
+  const result = sourceOf<T>();
 
   value(
-    all,
+    sourceAll([request, fetch]),
     patron(([req, fetch]) => {
       fetch
         .fetch(req as RequestInfo)

@@ -1,4 +1,4 @@
-import { sourceChangeable, sourceSync } from "silentium";
+import { sourceOf, sourceSync } from "silentium";
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
 import { fetched } from "../fetch/Fetched";
 
@@ -24,7 +24,7 @@ test("Fetched.test", async () => {
         }),
       }),
   };
-  const errors = sourceChangeable();
+  const errors = sourceOf();
   const request = {
     url: "/get",
     method: "get",

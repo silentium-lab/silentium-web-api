@@ -2,7 +2,7 @@ import {
   give,
   patron,
   sourceAll,
-  sourceChangeable,
+  sourceOf,
   SourceType,
   subSourceMany,
   value,
@@ -13,12 +13,11 @@ export const attribute = (
   attrNameSrc: SourceType<string>,
   defaultValueSrc: SourceType<string> = "",
 ) => {
-  const all = sourceAll([elementSrc, attrNameSrc, defaultValueSrc]);
-  const result = sourceChangeable<string>();
+  const result = sourceOf<string>();
   subSourceMany(result, [elementSrc, attrNameSrc, defaultValueSrc]);
 
   value(
-    all,
+    sourceAll([elementSrc, attrNameSrc, defaultValueSrc]),
     patron(([el, attrName, defaultValue]) => {
       give(el.getAttribute(attrName) || defaultValue, result);
     }),
