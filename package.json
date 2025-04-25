@@ -15,7 +15,8 @@
     "build-doc": "./docs/build.sh",
     "lint": "eslint src",
     "lint-fix": "eslint src --fix",
-    "test": "vitest",
+    "test": "vitest run",
+    "test:watch": "vitest watch",
     "cz": "git add . && git cz",
     "push-head": "git push origin HEAD",
     "test-debug": "env DEBUG=app:* vitest",
@@ -43,6 +44,7 @@
     "rollup": "^4.24.0",
     "rollup-plugin-dts": "^6.1.1",
     "rollup-plugin-esbuild": "^6.1.1",
+    "silentium-jsdom": "^0.0.1",
     "standard-version": "^9.5.0",
     "vitest": "^3.0.9"
   },
@@ -55,6 +57,6 @@
     }
   },
   "dependencies": {
-    "silentium": "^0.0.13"
+    "silentium": "^0.0.16"
   }
 }

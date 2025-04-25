@@ -1,30 +1,48 @@
 import {
   give,
-  GuestCast,
+  guestCast,
   GuestType,
-  SourceObjectType,
+  PersonalType,
+  sourceAll,
   SourceType,
   value,
 } from "silentium";
 
-export class Element implements SourceObjectType<HTMLElement> {
-  public constructor(private selector: SourceType<string>) {}
+type MutationAware = {
+  observe(
+    node: HTMLElement,
+    config: { childList: boolean; subtree: boolean },
+  ): void;
+  disconnect(): void;
+};
 
-  public value(guest: GuestType<HTMLElement>) {
+type MutationList = { type: string }[];
+
+/**
+ * Helps to find element by selector
+ */
+export const element = (
+  selectorSrc: SourceType<string>,
+  documentSrc: SourceType<Document>,
+  createObserver?: PersonalType<MutationAware>,
+): SourceType<HTMLElement> => {
+  const all = sourceAll([selectorSrc, documentSrc]);
+
+  return (guest: GuestType<HTMLElement>) => {
     value(
-      this.selector,
-      new GuestCast(guest, (selectorContent) => {
-        const element = document.querySelector(selectorContent);
+      all,
+      guestCast(guest, ([selector, document]) => {
+        const element = document.querySelector(selector);
         if (element) {
           give(element as HTMLElement, guest);
-        } else {
+        } else if (createObserver) {
           const targetNode = document.body;
           const config = { childList: true, subtree: true };
 
-          const observer = new MutationObserver((mutationsList) => {
+          const observer = createObserver.get((mutationsList: MutationList) => {
             for (const mutation of mutationsList) {
               if (mutation.type === "childList") {
-                const element = document.querySelector(selectorContent);
+                const element = document.querySelector(selector);
                 if (element) {
                   give(element as HTMLElement, guest);
                   observer.disconnect();
@@ -35,10 +53,10 @@ export class Element implements SourceObjectType<HTMLElement> {
           });
 
           observer.observe(targetNode, config);
+        } else {
+          throw new Error(`Element with selector=${selector} was not found!`);
         }
       }),
     );
-
-    return this;
-  }
-}
+  };
+};

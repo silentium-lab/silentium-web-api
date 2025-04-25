@@ -1,14 +1,23 @@
-import { GuestObjectType } from "silentium";
+import { patron, sourceAll, SourceType, value } from "silentium";
 
-export class Log implements GuestObjectType<unknown> {
-  public constructor(private title: string = "") {}
+type LogAware = { log: (...args: unknown[]) => unknown };
 
-  public introduction(): "patron" {
-    return "patron";
-  }
+/**
+ * Helps to print logs to somewhere
+ */
+export const log = <T>(
+  source: SourceType<T>,
+  title: SourceType<string> = "",
+  consoleLike: SourceType<LogAware> = console,
+): SourceType<T> => {
+  const all = sourceAll([source, title, consoleLike]);
 
-  public give(value: unknown): this {
-    console.log("LOG: ", this.title, value);
-    return this;
-  }
-}
+  value(
+    all,
+    patron(([s, title, console]) => {
+      console.log("LOG:", title, s);
+    }),
+  );
+
+  return source;
+};

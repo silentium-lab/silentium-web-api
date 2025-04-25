@@ -19,14 +19,14 @@ export const fetched = <T>(
   errors: GuestType<Error>,
   fetch: SourceType<FetchType>,
 ) => {
-  const all = sourceAll<[RequestInfo, FetchType]>([request, fetch]);
+  const all = sourceAll([request, fetch]);
   const result = sourceChangeable<T>();
 
   value(
     all,
     patron(([req, fetch]) => {
       fetch
-        .fetch(req)
+        .fetch(req as RequestInfo)
         .then((response) => {
           let readableResponse;
           if (response.headers.get("Content-Type") === "application/json") {

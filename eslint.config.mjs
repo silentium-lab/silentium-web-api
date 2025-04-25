@@ -24,6 +24,11 @@ export default [
     "plugin:@typescript-eslint/recommended",
   ),
   {
+    rules: {
+      "require-await": ["error"],
+    },
+  },
+  {
     plugins: {
       "@typescript-eslint": typescriptEslint,
     },

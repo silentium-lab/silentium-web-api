@@ -1,26 +1,28 @@
 import {
   give,
-  GuestCast,
-  GuestType,
-  SourceObjectType,
+  patron,
+  sourceAll,
+  sourceChangeable,
   SourceType,
+  subSourceMany,
   value,
 } from "silentium";
 
-export class Attribute implements SourceObjectType<string> {
-  public constructor(
-    private element: SourceType<HTMLElement>,
-    private attrName: string,
-    private defaultValue: string = "",
-  ) {}
+export const attribute = (
+  elementSrc: SourceType<HTMLElement>,
+  attrNameSrc: SourceType<string>,
+  defaultValueSrc: SourceType<string> = "",
+) => {
+  const all = sourceAll([elementSrc, attrNameSrc, defaultValueSrc]);
+  const result = sourceChangeable<string>();
+  subSourceMany(result, [elementSrc, attrNameSrc, defaultValueSrc]);
 
-  public value(guest: GuestType<string>) {
-    value(
-      this.element,
-      new GuestCast(guest, (el) => {
-        give(el.getAttribute(this.attrName) || this.defaultValue, guest);
-      }),
-    );
-    return this;
-  }
-}
+  value(
+    all,
+    patron(([el, attrName, defaultValue]) => {
+      give(el.getAttribute(attrName) || defaultValue, result);
+    }),
+  );
+
+  return result;
+};
