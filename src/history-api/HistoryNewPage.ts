@@ -1,19 +1,34 @@
-import { GuestObjectType } from "silentium";
+import {
+  give,
+  guestCast,
+  GuestType,
+  sourceAll,
+  SourceType,
+  value,
+} from "silentium";
 
-export class HistoryNewPage implements GuestObjectType<string> {
-  public give(url: string) {
-    const correctUrl = location.href.replace(location.origin, "");
-    if (url === correctUrl) {
-      return this;
-    }
-    history.pushState(
-      {
-        url,
-        date: Date.now(),
-      },
-      "Loading...",
-      url,
+type PushStateAwareType = {
+  pushState(data: Record<string, unknown>, title: string, url: string): void;
+};
+
+export const historyNewPate = (
+  urlSrc: SourceType<string>,
+  pushSrc: SourceType<PushStateAwareType>,
+) => {
+  return (guest: GuestType<string>) => {
+    value(
+      sourceAll([urlSrc, pushSrc]),
+      guestCast(guest, ([url, push]) => {
+        push.pushState(
+          {
+            url,
+            date: Date.now(),
+          },
+          "",
+          url,
+        );
+        give(url, guest);
+      }),
     );
-    return this;
-  }
-}
+  };
+};

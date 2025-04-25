@@ -1,14 +1,50 @@
-import { give, GuestType } from "silentium";
+import {
+  destroy,
+  give,
+  GuestType,
+  patronOnce,
+  sourceOf,
+  SourceType,
+  value,
+} from "silentium";
 
-export class HistoryPoppedPage {
-  public constructor(private pageSource: GuestType<string>) {}
+type WindowListener<T> = {
+  addEventListener: (name: string, handler: (e: T) => void) => void;
+  removeEventListener: (name: string, handler: (e: T) => void) => void;
+};
 
-  public watchPop() {
-    window.addEventListener("popstate", (event) => {
-      const { state } = event;
-      if (state?.url) {
-        give(state.url, this.pageSource);
-      }
-    });
-  }
-}
+export const historyPoppedPage = (
+  pageGuest: GuestType<string>,
+  destroyedSrc: SourceType<void>,
+  listenSrc: SourceType<WindowListener<PopStateEvent>>,
+) => {
+  const result = sourceOf<string>();
+  result.value(pageGuest);
+
+  const handler = (e: PopStateEvent) => {
+    const { state } = e;
+    if (state?.url) {
+      give(String(state.url), result);
+    }
+  };
+
+  value(
+    listenSrc,
+    patronOnce((listen) => {
+      listen.addEventListener("popstate", handler);
+    }),
+  );
+
+  value(
+    destroyedSrc,
+    patronOnce(() => {
+      destroy([result]);
+
+      value(listenSrc, (listen) => {
+        listen.removeEventListener("popstate", handler);
+      });
+    }),
+  );
+
+  return result;
+};
