@@ -7,6 +7,10 @@ import {
   value,
 } from "silentium";
 
+/**
+ * Render styles to document
+ * https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API
+ */
 export const styleInstalled = (
   documentSrc: SourceType<Document>,
   contentSrc: SourceType<string>,

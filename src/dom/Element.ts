@@ -20,6 +20,7 @@ type MutationList = { type: string }[];
 
 /**
  * Helps to find element by selector
+ * https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API
  */
 export const element = (
   selectorSrc: SourceType<string>,

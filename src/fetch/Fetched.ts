@@ -13,6 +13,7 @@ type FetchType = { fetch: (input: RequestInfo) => Promise<Response> };
 /**
  * Wrapper around FetchAPI
  * https://kosukhin.github.io/patron-web-api/#/fetch/fetched
+ * https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
  */
 export const fetched = <T>(
   request: SourceType<Partial<RequestInfo>>,

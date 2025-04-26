@@ -1,7 +1,6 @@
 import {
   destroy,
   give,
-  GuestType,
   patronOnce,
   sourceOf,
   SourceType,
@@ -13,13 +12,15 @@ type WindowListener<T> = {
   removeEventListener: (name: string, handler: (e: T) => void) => void;
 };
 
+/**
+ * Get source of new page popped from historyAPI
+ * https://developer.mozilla.org/en-US/docs/Web/API/History_API
+ */
 export const historyPoppedPage = (
-  pageGuest: GuestType<string>,
   destroyedSrc: SourceType<void>,
   listenSrc: SourceType<WindowListener<PopStateEvent>>,
 ) => {
   const result = sourceOf<string>();
-  result.value(pageGuest);
 
   const handler = (e: PopStateEvent) => {
     const { state } = e;

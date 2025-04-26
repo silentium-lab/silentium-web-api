@@ -8,6 +8,10 @@ import {
   value,
 } from "silentium";
 
+/**
+ * Return content attribute of HTMLElement
+ * https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API
+ */
 export const attribute = (
   elementSrc: SourceType<HTMLElement>,
   attrNameSrc: SourceType<string>,
