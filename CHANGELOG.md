@@ -2,6 +2,24 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.4](https://github.com/silentium-lab/silentium-web-api/compare/v0.0.3...v0.0.4) (2025-04-26)
+
+
+### Features
+
+* **main:** done moving to procedures ([eb44963](https://github.com/silentium-lab/silentium-web-api/commit/eb44963222b037bfcf8407eb2a3957dd47080974))
+* **main:** movinng to procedures ([5c61944](https://github.com/silentium-lab/silentium-web-api/commit/5c61944c61d410c642b481f75d78aba7fca0e35d))
+* **main:** test for fetched procedure ([d70defe](https://github.com/silentium-lab/silentium-web-api/commit/d70defe4f6f6cd252aabd866e2cde303ad064b5b))
+* **main:** update source changeable deps ([4494c2e](https://github.com/silentium-lab/silentium-web-api/commit/4494c2ec9830ba95833076b9e3d0ad43ae2fe326))
+* **main:** work on history page ([5dceaeb](https://github.com/silentium-lab/silentium-web-api/commit/5dceaeb0abbdaef992205d76a3b6e8271759e5b4))
+* **main:** work on moving to procedures ([b007608](https://github.com/silentium-lab/silentium-web-api/commit/b007608dbb29fa51e63a426caaa80cff700151ce))
+
+
+### Bug Fixes
+
+* **main:** deps updated ([370b594](https://github.com/silentium-lab/silentium-web-api/commit/370b5945dad93dca5fdfc8d392e957f1921f5970))
+* **main:** deps updated ([cd12720](https://github.com/silentium-lab/silentium-web-api/commit/cd1272054b3a2f251e372f5116aa2acc3999e7d0))
+
 ### [0.0.3](https://github.com/silentium-lab/silentium-web-api/compare/v0.0.2...v0.0.3) (2025-04-19)
 
 
