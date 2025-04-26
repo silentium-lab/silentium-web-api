@@ -1,61 +1,67 @@
-import { GuestType, GuestObjectType, Guest, SourceChangeable, SourceObjectType, SourceType } from 'silentium';
+import * as silentium from 'silentium';
+import { SourceType, GuestType, PersonalType } from 'silentium';
 
-declare class HistoryPoppedPage {
-    private pageSource;
-    constructor(pageSource: GuestType<string>);
-    watchPop(): void;
-}
+type WindowListener<T> = {
+    addEventListener: (name: string, handler: (e: T) => void) => void;
+    removeEventListener: (name: string, handler: (e: T) => void) => void;
+};
+/**
+ * Get source of new page popped from historyAPI
+ * https://developer.mozilla.org/en-US/docs/Web/API/History_API
+ */
+declare const historyPoppedPage: (destroyedSrc: SourceType<void>, listenSrc: SourceType<WindowListener<PopStateEvent>>) => silentium.SourceChangeableType<string>;
 
-declare class HistoryNewPage implements GuestObjectType<string> {
-    give(url: string): this;
-}
+type PushStateAwareType = {
+    pushState(data: Record<string, unknown>, title: string, url: string): void;
+};
+/**
+ * Apply content of new url to history API
+ * https://developer.mozilla.org/en-US/docs/Web/API/History_API
+ */
+declare const historyNewPate: (urlSrc: SourceType<string>, pushSrc: SourceType<PushStateAwareType>) => (guest: GuestType<string>) => void;
 
-interface HistoryPageDocument {
-    url: string;
-    title: string;
-    data?: unknown;
-}
-
-interface FetchRequestType extends RequestInit {
-    url: string;
-    asJson: boolean;
-}
+type FetchType = {
+    fetch: (input: RequestInfo) => Promise<Response>;
+};
 /**
  * Wrapper around FetchAPI
  * https://kosukhin.github.io/patron-web-api/#/fetch/fetched
+ * https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
  */
-declare class Fetched<T> {
-    private errors;
-    private source;
-    constructor(errors: Guest<Error>);
-    do(): Guest<FetchRequestType>;
-    result(): SourceChangeable<T>;
-}
+declare const fetched: <T>(request: SourceType<Partial<RequestInfo>>, errors: GuestType<Error>, fetch: SourceType<FetchType>) => silentium.SourceChangeableType<T>;
 
-declare class Element implements SourceObjectType<HTMLElement> {
-    private selector;
-    constructor(selector: SourceType<string>);
-    value(guest: GuestType<HTMLElement>): this;
-}
+type MutationAware = {
+    observe(node: HTMLElement, config: {
+        childList: boolean;
+        subtree: boolean;
+    }): void;
+    disconnect(): void;
+};
+/**
+ * Helps to find element by selector
+ * https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API
+ */
+declare const element: (selectorSrc: SourceType<string>, documentSrc: SourceType<Document>, createObserver?: PersonalType<MutationAware>) => SourceType<HTMLElement>;
 
-declare class Attribute implements SourceObjectType<string> {
-    private element;
-    private attrName;
-    private defaultValue;
-    constructor(element: SourceType<HTMLElement>, attrName: string, defaultValue?: string);
-    value(guest: GuestType<string>): this;
-}
+/**
+ * Return content attribute of HTMLElement
+ * https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API
+ */
+declare const attribute: (elementSrc: SourceType<HTMLElement>, attrNameSrc: SourceType<string>, defaultValueSrc?: SourceType<string>) => silentium.SourceChangeableType<string>;
 
-declare class StyleInstalled implements GuestObjectType<string> {
-    give(value: string): this;
-}
+/**
+ * Render styles to document
+ * https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API
+ */
+declare const styleInstalled: (documentSrc: SourceType<Document>, contentSrc: SourceType<string>) => (guest: GuestType<Document>) => void;
 
-declare class Log implements GuestObjectType<unknown> {
-    private title;
-    constructor(title?: string);
-    introduction(): "patron";
-    give(value: unknown): this;
-}
+type LogAware = {
+    log: (...args: unknown[]) => unknown;
+};
+/**
+ * Helps to print logs to somewhere
+ * https://developer.mozilla.org/en-US/docs/Web/API/Console_API
+ */
+declare const log: <T>(source: SourceType<T>, title?: SourceType<string>, consoleLike?: SourceType<LogAware>) => SourceType<T>;
 
-export { Attribute, Element, Fetched, HistoryNewPage, HistoryPoppedPage, Log, StyleInstalled };
-export type { HistoryPageDocument };
+export { attribute, element, fetched, historyNewPate, historyPoppedPage, log, styleInstalled };

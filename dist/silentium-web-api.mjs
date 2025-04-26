@@ -1,87 +1,93 @@
-import { give, SourceChangeable, Guest, value, GuestCast } from 'silentium';
+import { sourceOf, value, patronOnce, destroy, give, sourceAll, guestCast, patron, subSourceMany } from 'silentium';
 
-class HistoryPoppedPage {
-  constructor(pageSource) {
-    this.pageSource = pageSource;
-  }
-  watchPop() {
-    window.addEventListener("popstate", (event) => {
-      const { state } = event;
-      if (state?.url) {
-        give(state.url, this.pageSource);
-      }
-    });
-  }
-}
-
-class HistoryNewPage {
-  give(url) {
-    const correctUrl = location.href.replace(location.origin, "");
-    if (url === correctUrl) {
-      return this;
+const historyPoppedPage = (destroyedSrc, listenSrc) => {
+  const result = sourceOf();
+  const handler = (e) => {
+    const { state } = e;
+    if (state?.url) {
+      give(String(state.url), result);
     }
-    history.pushState(
-      {
-        url,
-        date: Date.now()
-      },
-      "Loading...",
-      url
-    );
-    return this;
-  }
-}
-
-var __defProp = Object.defineProperty;
-var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { enumerable: true, configurable: true, writable: true, value }) : obj[key] = value;
-var __publicField = (obj, key, value) => __defNormalProp(obj, key + "" , value);
-class Fetched {
-  constructor(errors) {
-    this.errors = errors;
-    __publicField(this, "source", new SourceChangeable());
-  }
-  do() {
-    return new Guest((request) => {
-      fetch(request.url, request).then((resp) => {
-        if (!resp.ok) {
-          return Promise.reject(new Error("Error of status " + resp.status));
-        }
-        if (request.asJson) {
-          return resp.json();
-        }
-        return resp.text();
-      }).then((content) => {
-        this.source.give(content);
-      }).catch((e) => {
-        this.errors.give(e);
+  };
+  value(
+    listenSrc,
+    patronOnce((listen) => {
+      listen.addEventListener("popstate", handler);
+    })
+  );
+  value(
+    destroyedSrc,
+    patronOnce(() => {
+      destroy([result]);
+      value(listenSrc, (listen) => {
+        listen.removeEventListener("popstate", handler);
       });
-    });
-  }
-  result() {
-    return this.source;
-  }
-}
+    })
+  );
+  return result;
+};
 
-class Element {
-  constructor(selector) {
-    this.selector = selector;
-  }
-  value(guest) {
+const historyNewPate = (urlSrc, pushSrc) => {
+  return (guest) => {
     value(
-      this.selector,
-      new GuestCast(guest, (selectorContent) => {
-        const element = document.querySelector(selectorContent);
-        if (element) {
-          give(element, guest);
+      sourceAll([urlSrc, pushSrc]),
+      guestCast(guest, ([url, push]) => {
+        push.pushState(
+          {
+            url,
+            date: Date.now()
+          },
+          "",
+          url
+        );
+        give(url, guest);
+      })
+    );
+  };
+};
+
+const fetched = (request, errors, fetch) => {
+  const result = sourceOf();
+  value(
+    sourceAll([request, fetch]),
+    patron(([req, fetch2]) => {
+      fetch2.fetch(req).then((response) => {
+        let readableResponse;
+        if (response.headers.get("Content-Type") === "application/json") {
+          readableResponse = response.json();
         } else {
+          readableResponse = response.text();
+        }
+        if (!response.ok) {
+          return Promise.reject(readableResponse);
+        }
+        return readableResponse;
+      }).then((content) => {
+        give(content, result);
+      }).catch((error) => {
+        give(error, errors);
+      });
+    })
+  );
+  return result;
+};
+
+const element = (selectorSrc, documentSrc, createObserver) => {
+  return (guest) => {
+    value(
+      sourceAll([selectorSrc, documentSrc]),
+      guestCast(guest, ([selector, document]) => {
+        const element2 = document.querySelector(selector);
+        if (element2) {
+          give(element2, guest);
+        } else if (createObserver) {
           const targetNode = document.body;
           const config = { childList: true, subtree: true };
-          const observer = new MutationObserver((mutationsList) => {
+          const observer = createObserver.get((mutationsList) => {
             for (const mutation of mutationsList) {
               if (mutation.type === "childList") {
-                const element2 = document.querySelector(selectorContent);
-                if (element2) {
-                  give(element2, guest);
+                const element3 = document.querySelector(selector);
+                if (element3) {
+                  give(element3, guest);
                   observer.disconnect();
                   break;
                 }
@@ -89,51 +95,50 @@ class Element {
             }
           });
           observer.observe(targetNode, config);
+        } else {
+          throw new Error(`Element with selector=${selector} was not found!`);
         }
       })
     );
-    return this;
-  }
-}
+  };
+};
 
-class Attribute {
-  constructor(element, attrName, defaultValue = "") {
-    this.element = element;
-    this.attrName = attrName;
-    this.defaultValue = defaultValue;
-  }
-  value(guest) {
+const attribute = (elementSrc, attrNameSrc, defaultValueSrc = "") => {
+  const result = sourceOf();
+  subSourceMany(result, [elementSrc, attrNameSrc, defaultValueSrc]);
+  value(
+    sourceAll([elementSrc, attrNameSrc, defaultValueSrc]),
+    patron(([el, attrName, defaultValue]) => {
+      give(el.getAttribute(attrName) || defaultValue, result);
+    })
+  );
+  return result;
+};
+
+const styleInstalled = (documentSrc, contentSrc) => {
+  return (guest) => {
     value(
-      this.element,
-      new GuestCast(guest, (el) => {
-        give(el.getAttribute(this.attrName) || this.defaultValue, guest);
+      sourceAll([documentSrc, contentSrc]),
+      guestCast(guest, ([document, content]) => {
+        const styleEl = document.createElement("style");
+        styleEl.textContent = content;
+        document.head.appendChild(styleEl);
+        give(document, guest);
       })
     );
-    return this;
-  }
-}
+  };
+};
 
-class StyleInstalled {
-  give(value) {
-    const styleEl = document.createElement("style");
-    styleEl.textContent = value;
-    document.head.appendChild(styleEl);
-    return this;
-  }
-}
+const log = (source, title = "", consoleLike = console) => {
+  const all = sourceAll([source, title, consoleLike]);
+  value(
+    all,
+    patron(([s, title2, console2]) => {
+      console2.log("LOG:", title2, s);
+    })
+  );
+  return source;
+};
 
-class Log {
-  constructor(title = "") {
-    this.title = title;
-  }
-  introduction() {
-    return "patron";
-  }
-  give(value) {
-    console.log("LOG: ", this.title, value);
-    return this;
-  }
-}
-
-export { Attribute, Element, Fetched, HistoryNewPage, HistoryPoppedPage, Log, StyleInstalled };
+export { attribute, element, fetched, historyNewPate, historyPoppedPage, log, styleInstalled };
 //# sourceMappingURL=silentium-web-api.mjs.map
