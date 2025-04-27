@@ -11,7 +11,7 @@ test("HistoryNewPage.test", () => {
     },
   };
 
-  sourceSync(historyNewPate(url, pushAware));
+  sourceSync(historyNewPate(pushAware, url));
   url.give("/new");
 
   const urlSync = sourceSync(urlSynced);

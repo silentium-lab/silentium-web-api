@@ -1,5 +1,6 @@
-import { log } from "../console/Log";
+import partial from "lodash.partial";
 import { expect, test } from "vitest";
+import { log } from "../console/Log";
 
 test("Log.test", () => {
   const fakeLog = {
@@ -8,6 +9,7 @@ test("Log.test", () => {
       this.buffer += args.join(" ");
     },
   };
-  log("content", "title", fakeLog);
-  expect(fakeLog.buffer).toBe("LOG: title content");
+  const logger = partial(log<string>, fakeLog, "title");
+  logger("test");
+  expect(fakeLog.buffer).toBe("LOG: title test");
 });

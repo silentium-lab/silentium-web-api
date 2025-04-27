@@ -17,8 +17,8 @@ type WindowListener<T> = {
  * https://developer.mozilla.org/en-US/docs/Web/API/History_API
  */
 export const historyPoppedPage = (
-  destroyedSrc: SourceType<void>,
   listenSrc: SourceType<WindowListener<PopStateEvent>>,
+  destroyedSrc: SourceType<void>,
 ) => {
   const result = sourceOf<string>();
 

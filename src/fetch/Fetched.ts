@@ -16,9 +16,9 @@ type FetchType = { fetch: (input: RequestInfo) => Promise<Response> };
  * https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
  */
 export const fetched = <T>(
+  fetch: SourceType<FetchType>,
   request: SourceType<Partial<RequestInfo>>,
   errors: GuestType<Error>,
-  fetch: SourceType<FetchType>,
 ) => {
   const result = sourceOf<T>();
 

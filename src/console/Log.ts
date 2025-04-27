@@ -7,9 +7,9 @@ type LogAware = { log: (...args: unknown[]) => unknown };
  * https://developer.mozilla.org/en-US/docs/Web/API/Console_API
  */
 export const log = <T>(
+  consoleLike: SourceType<LogAware>,
+  title: SourceType<string>,
   source: SourceType<T>,
-  title: SourceType<string> = "",
-  consoleLike: SourceType<LogAware> = console,
 ): SourceType<T> => {
   const all = sourceAll([source, title, consoleLike]);
 

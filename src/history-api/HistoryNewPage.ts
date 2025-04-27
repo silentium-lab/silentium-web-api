@@ -16,8 +16,8 @@ type PushStateAwareType = {
  * https://developer.mozilla.org/en-US/docs/Web/API/History_API
  */
 export const historyNewPate = (
-  urlSrc: SourceType<string>,
   pushSrc: SourceType<PushStateAwareType>,
+  urlSrc: SourceType<string>,
 ) => {
   return (guest: GuestType<string>) => {
     value(

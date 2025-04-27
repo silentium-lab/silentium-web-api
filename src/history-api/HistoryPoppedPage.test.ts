@@ -13,7 +13,7 @@ test("HistoryPoppedPage.test.ts", () => {
       handlers.delete(handler);
     },
   };
-  const page = sourceSync(historyPoppedPage(destroyed, fakeWindowListener));
+  const page = sourceSync(historyPoppedPage(fakeWindowListener, destroyed));
 
   const iterator = handlers.keys();
   for (const handler of iterator) {

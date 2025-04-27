@@ -8,8 +8,8 @@ import {
 } from "silentium";
 
 export const documentTitle = (
-  titleSrc: SourceType<string>,
   documentSrc: SourceType<Document>,
+  titleSrc: SourceType<string>,
 ) => {
   return (g: GuestType<string>) => {
     value(

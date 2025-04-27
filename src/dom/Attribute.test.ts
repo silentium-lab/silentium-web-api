@@ -10,6 +10,8 @@ test("Attribute.test", () => {
     "<div class='menu-link' data-name='Victor'>Link</div>",
   );
   const attr = sourceSync(attribute(element, "data-name", "unknown"));
-
   expect(attr.syncValue()).toBe("Victor");
+
+  const attrNotFound = sourceSync(attribute(element, "data-none", "unknown"));
+  expect(attrNotFound.syncValue()).toBe("unknown");
 });

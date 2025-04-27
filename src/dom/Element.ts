@@ -23,9 +23,9 @@ type MutationList = { type: string }[];
  * https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API
  */
 export const element = (
-  selectorSrc: SourceType<string>,
+  createObserver: PersonalType<MutationAware>,
   documentSrc: SourceType<Document>,
-  createObserver?: PersonalType<MutationAware>,
+  selectorSrc: SourceType<string>,
 ): SourceType<HTMLElement> => {
   return (guest: GuestType<HTMLElement>) => {
     value(

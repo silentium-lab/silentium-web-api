@@ -30,7 +30,7 @@ test("Fetched.test", async () => {
     method: "get",
   };
 
-  const fetchResult = fetched<{ content: string }>(request, errors, fakeFetch);
+  const fetchResult = fetched<{ content: string }>(fakeFetch, request, errors);
 
   await vi.advanceTimersByTime(10);
   const result = sourceSync(fetchResult);
