@@ -22,18 +22,18 @@ type MutationList = { type: string }[];
  * Helps to find element by selector
  * https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API
  */
-export const element = (
+export const element = <T extends HTMLElement>(
   createObserver: PersonalType<MutationAware>,
   documentSrc: SourceType<Document>,
   selectorSrc: SourceType<string>,
-): SourceType<HTMLElement> => {
-  return (guest: GuestType<HTMLElement>) => {
+): SourceType<T> => {
+  return (guest: GuestType<T>) => {
     value(
       sourceAll([selectorSrc, documentSrc]),
       guestCast(guest, ([selector, document]) => {
         const element = document.querySelector(selector);
         if (element) {
-          give(element as HTMLElement, guest);
+          give(element as T, guest);
         } else if (createObserver) {
           const targetNode = document.body;
           const config = { childList: true, subtree: true };
@@ -43,7 +43,7 @@ export const element = (
               if (mutation.type === "childList") {
                 const element = document.querySelector(selector);
                 if (element) {
-                  give(element as HTMLElement, guest);
+                  give(element as T, guest);
                   observer.disconnect();
                   break;
                 }
