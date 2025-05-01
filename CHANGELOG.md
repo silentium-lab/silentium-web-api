@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.5](https://github.com/silentium-lab/silentium-web-api/compare/v0.0.4...v0.0.5) (2025-05-01)
+
+
+### Features
+
+* **main:** document title source ([eadba6e](https://github.com/silentium-lab/silentium-web-api/commit/eadba6ed2b8bec3949f5cfd02be610e9434dc2ea))
+* **main:** input control procedure ([e7cb598](https://github.com/silentium-lab/silentium-web-api/commit/e7cb5988bab73f889de290614624b3fbf6091acd))
+* **main:** link component transitioned from silentium-components ([2b0b2db](https://github.com/silentium-lab/silentium-web-api/commit/2b0b2db2c0227ea8a1bebca1ec9ae9f6ed2d8efd))
+* **main:** routes changed ([3167c5f](https://github.com/silentium-lab/silentium-web-api/commit/3167c5f8f8f686ef505e0a6c2f1be360d7492052))
+* **main:** text and visibility abstractions moved from comopnents ([f5b68af](https://github.com/silentium-lab/silentium-web-api/commit/f5b68afa60920b543a1adcc08c4a5212dfac071b))
+
+
+### Bug Fixes
+
+* **main:** fix attributes ordering ([9490831](https://github.com/silentium-lab/silentium-web-api/commit/9490831f6ac814138c4419656aa35d9ca83fcc06))
+
 ### [0.0.4](https://github.com/silentium-lab/silentium-web-api/compare/v0.0.3...v0.0.4) (2025-04-26)
 
 
