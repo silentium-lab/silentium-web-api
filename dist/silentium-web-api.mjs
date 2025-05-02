@@ -157,6 +157,26 @@ const input = (valueSrc, elementSrc) => {
   return valueSrc;
 };
 
+const text = (valueSrc, elementSrc) => {
+  value(
+    sourceAll([valueSrc, elementSrc]),
+    patron(([v, el]) => {
+      el.textContent = v;
+    })
+  );
+  return valueSrc;
+};
+
+const html = (elementSrc, valueSrc) => {
+  value(
+    sourceAll([valueSrc, elementSrc]),
+    patron(([v, el]) => {
+      el.innerHTML = v;
+    })
+  );
+  return valueSrc;
+};
+
 const log = (consoleLike, title, source) => {
   const all = sourceAll([source, title, consoleLike]);
   value(
@@ -168,5 +188,5 @@ const log = (consoleLike, title, source) => {
   return source;
 };
 
-export { attribute, element, fetched, historyNewPate, historyPoppedPage, input, log, styleInstalled };
+export { attribute, element, fetched, historyNewPate, historyPoppedPage, html, input, log, styleInstalled, text };
 //# sourceMappingURL=silentium-web-api.mjs.map
