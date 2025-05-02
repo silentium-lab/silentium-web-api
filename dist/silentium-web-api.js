@@ -1,6 +1,6 @@
 import { sourceOf, value, patronOnce, destroy, give, sourceAll, guestCast, patron, subSourceMany } from 'silentium';
 
-const historyPoppedPage = (destroyedSrc, listenSrc) => {
+const historyPoppedPage = (listenSrc, destroyedSrc) => {
   const result = sourceOf();
   const handler = (e) => {
     const { state } = e;
@@ -26,7 +26,7 @@ const historyPoppedPage = (destroyedSrc, listenSrc) => {
   return result;
 };
 
-const historyNewPate = (urlSrc, pushSrc) => {
+const historyNewPate = (pushSrc, urlSrc) => {
   return (guest) => {
     value(
       sourceAll([urlSrc, pushSrc]),
@@ -45,7 +45,7 @@ const historyNewPate = (urlSrc, pushSrc) => {
   };
 };
 
-const fetched = (request, errors, fetch) => {
+const fetched = (fetch, request, errors) => {
   const result = sourceOf();
   value(
     sourceAll([request, fetch]),
@@ -71,7 +71,7 @@ const fetched = (request, errors, fetch) => {
   return result;
 };
 
-const element = (selectorSrc, documentSrc, createObserver) => {
+const element = (createObserver, documentSrc, selectorSrc) => {
   return (guest) => {
     value(
       sourceAll([selectorSrc, documentSrc]),
@@ -123,22 +123,50 @@ const styleInstalled = (documentSrc, contentSrc) => {
         const styleEl = document.createElement("style");
         styleEl.textContent = content;
         document.head.appendChild(styleEl);
-        give(document, guest);
+        give(content, guest);
       })
     );
   };
 };
 
-const log = (source, title = "", consoleLike = console) => {
+const input = (valueSrc, elementSrc) => {
+  const setValue = () => {
+    value(elementSrc, (element) => {
+      valueSrc.give(element.value);
+    });
+  };
+  let prevElement = null;
+  value(
+    elementSrc,
+    patron((element) => {
+      if (prevElement) {
+        element.removeEventListener("keyup", setValue);
+        element.removeEventListener("change", setValue);
+      }
+      element.addEventListener("keyup", setValue);
+      element.addEventListener("change", setValue);
+      prevElement = element;
+    })
+  );
+  value(
+    sourceAll([valueSrc, elementSrc]),
+    patron(([value2, element]) => {
+      element.value = String(value2);
+    })
+  );
+  return valueSrc;
+};
+
+const log = (consoleLike, title, source) => {
   const all = sourceAll([source, title, consoleLike]);
   value(
     all,
-    patron(([s, title2, console2]) => {
-      console2.log("LOG:", title2, s);
+    patron(([s, title2, console]) => {
+      console.log("LOG:", title2, s);
     })
   );
   return source;
 };
 
-export { attribute, element, fetched, historyNewPate, historyPoppedPage, log, styleInstalled };
+export { attribute, element, fetched, historyNewPate, historyPoppedPage, input, log, styleInstalled };
 //# sourceMappingURL=silentium-web-api.js.map

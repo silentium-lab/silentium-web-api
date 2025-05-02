@@ -1,5 +1,5 @@
 import * as silentium from 'silentium';
-import { SourceType, GuestType, PersonalType } from 'silentium';
+import { SourceType, GuestType, PersonalType, SourceChangeableType } from 'silentium';
 
 type WindowListener<T> = {
     addEventListener: (name: string, handler: (e: T) => void) => void;
@@ -9,7 +9,7 @@ type WindowListener<T> = {
  * Get source of new page popped from historyAPI
  * https://developer.mozilla.org/en-US/docs/Web/API/History_API
  */
-declare const historyPoppedPage: (destroyedSrc: SourceType<void>, listenSrc: SourceType<WindowListener<PopStateEvent>>) => silentium.SourceChangeableType<string>;
+declare const historyPoppedPage: (listenSrc: SourceType<WindowListener<PopStateEvent>>, destroyedSrc: SourceType<void>) => silentium.SourceChangeableType<string>;
 
 type PushStateAwareType = {
     pushState(data: Record<string, unknown>, title: string, url: string): void;
@@ -18,7 +18,7 @@ type PushStateAwareType = {
  * Apply content of new url to history API
  * https://developer.mozilla.org/en-US/docs/Web/API/History_API
  */
-declare const historyNewPate: (urlSrc: SourceType<string>, pushSrc: SourceType<PushStateAwareType>) => (guest: GuestType<string>) => void;
+declare const historyNewPate: (pushSrc: SourceType<PushStateAwareType>, urlSrc: SourceType<string>) => (guest: GuestType<string>) => void;
 
 type FetchType = {
     fetch: (input: RequestInfo) => Promise<Response>;
@@ -28,7 +28,7 @@ type FetchType = {
  * https://kosukhin.github.io/patron-web-api/#/fetch/fetched
  * https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
  */
-declare const fetched: <T>(request: SourceType<Partial<RequestInfo>>, errors: GuestType<Error>, fetch: SourceType<FetchType>) => silentium.SourceChangeableType<T>;
+declare const fetched: <T>(fetch: SourceType<FetchType>, request: SourceType<Partial<RequestInfo>>, errors: GuestType<Error>) => silentium.SourceChangeableType<T>;
 
 type MutationAware = {
     observe(node: HTMLElement, config: {
@@ -41,7 +41,7 @@ type MutationAware = {
  * Helps to find element by selector
  * https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API
  */
-declare const element: (selectorSrc: SourceType<string>, documentSrc: SourceType<Document>, createObserver?: PersonalType<MutationAware>) => SourceType<HTMLElement>;
+declare const element: <T extends HTMLElement>(createObserver: PersonalType<MutationAware>, documentSrc: SourceType<Document>, selectorSrc: SourceType<string>) => SourceType<T>;
 
 /**
  * Return content attribute of HTMLElement
@@ -53,7 +53,10 @@ declare const attribute: (elementSrc: SourceType<HTMLElement>, attrNameSrc: Sour
  * Render styles to document
  * https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API
  */
-declare const styleInstalled: (documentSrc: SourceType<Document>, contentSrc: SourceType<string>) => (guest: GuestType<Document>) => void;
+declare const styleInstalled: (documentSrc: SourceType<Document>, contentSrc: SourceType<string>) => (guest: GuestType<string>) => void;
+
+type InputValue = number | string;
+declare const input: (valueSrc: SourceChangeableType<InputValue>, elementSrc: SourceType<HTMLInputElement>) => SourceChangeableType<InputValue>;
 
 type LogAware = {
     log: (...args: unknown[]) => unknown;
@@ -62,6 +65,6 @@ type LogAware = {
  * Helps to print logs to somewhere
  * https://developer.mozilla.org/en-US/docs/Web/API/Console_API
  */
-declare const log: <T>(source: SourceType<T>, title?: SourceType<string>, consoleLike?: SourceType<LogAware>) => SourceType<T>;
+declare const log: <T>(consoleLike: SourceType<LogAware>, title: SourceType<string>, source: SourceType<T>) => SourceType<T>;
 
-export { attribute, element, fetched, historyNewPate, historyPoppedPage, log, styleInstalled };
+export { attribute, element, fetched, historyNewPate, historyPoppedPage, input, log, styleInstalled };

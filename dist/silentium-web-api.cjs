@@ -2,7 +2,7 @@
 
 var silentium = require('silentium');
 
-const historyPoppedPage = (destroyedSrc, listenSrc) => {
+const historyPoppedPage = (listenSrc, destroyedSrc) => {
   const result = silentium.sourceOf();
   const handler = (e) => {
     const { state } = e;
@@ -28,7 +28,7 @@ const historyPoppedPage = (destroyedSrc, listenSrc) => {
   return result;
 };
 
-const historyNewPate = (urlSrc, pushSrc) => {
+const historyNewPate = (pushSrc, urlSrc) => {
   return (guest) => {
     silentium.value(
       silentium.sourceAll([urlSrc, pushSrc]),
@@ -47,7 +47,7 @@ const historyNewPate = (urlSrc, pushSrc) => {
   };
 };
 
-const fetched = (request, errors, fetch) => {
+const fetched = (fetch, request, errors) => {
   const result = silentium.sourceOf();
   silentium.value(
     silentium.sourceAll([request, fetch]),
@@ -73,7 +73,7 @@ const fetched = (request, errors, fetch) => {
   return result;
 };
 
-const element = (selectorSrc, documentSrc, createObserver) => {
+const element = (createObserver, documentSrc, selectorSrc) => {
   return (guest) => {
     silentium.value(
       silentium.sourceAll([selectorSrc, documentSrc]),
@@ -125,18 +125,46 @@ const styleInstalled = (documentSrc, contentSrc) => {
         const styleEl = document.createElement("style");
         styleEl.textContent = content;
         document.head.appendChild(styleEl);
-        silentium.give(document, guest);
+        silentium.give(content, guest);
       })
     );
   };
 };
 
-const log = (source, title = "", consoleLike = console) => {
+const input = (valueSrc, elementSrc) => {
+  const setValue = () => {
+    silentium.value(elementSrc, (element) => {
+      valueSrc.give(element.value);
+    });
+  };
+  let prevElement = null;
+  silentium.value(
+    elementSrc,
+    silentium.patron((element) => {
+      if (prevElement) {
+        element.removeEventListener("keyup", setValue);
+        element.removeEventListener("change", setValue);
+      }
+      element.addEventListener("keyup", setValue);
+      element.addEventListener("change", setValue);
+      prevElement = element;
+    })
+  );
+  silentium.value(
+    silentium.sourceAll([valueSrc, elementSrc]),
+    silentium.patron(([value2, element]) => {
+      element.value = String(value2);
+    })
+  );
+  return valueSrc;
+};
+
+const log = (consoleLike, title, source) => {
   const all = silentium.sourceAll([source, title, consoleLike]);
   silentium.value(
     all,
-    silentium.patron(([s, title2, console2]) => {
-      console2.log("LOG:", title2, s);
+    silentium.patron(([s, title2, console]) => {
+      console.log("LOG:", title2, s);
     })
   );
   return source;
@@ -147,6 +175,7 @@ exports.element = element;
 exports.fetched = fetched;
 exports.historyNewPate = historyNewPate;
 exports.historyPoppedPage = historyPoppedPage;
+exports.input = input;
 exports.log = log;
 exports.styleInstalled = styleInstalled;
 //# sourceMappingURL=silentium-web-api.cjs.map
