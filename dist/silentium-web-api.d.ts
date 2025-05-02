@@ -58,6 +58,10 @@ declare const styleInstalled: (documentSrc: SourceType<Document>, contentSrc: So
 type InputValue = number | string;
 declare const input: (valueSrc: SourceChangeableType<InputValue>, elementSrc: SourceType<HTMLInputElement>) => SourceChangeableType<InputValue>;
 
+declare const text: (valueSrc: SourceType<string>, elementSrc: SourceType<HTMLElement>) => SourceType<string>;
+
+declare const html: (elementSrc: SourceType<HTMLElement>, valueSrc: SourceType<string>) => SourceType<string>;
+
 type LogAware = {
     log: (...args: unknown[]) => unknown;
 };
@@ -67,4 +71,4 @@ type LogAware = {
  */
 declare const log: <T>(consoleLike: SourceType<LogAware>, title: SourceType<string>, source: SourceType<T>) => SourceType<T>;
 
-export { attribute, element, fetched, historyNewPate, historyPoppedPage, input, log, styleInstalled };
+export { attribute, element, fetched, historyNewPate, historyPoppedPage, html, input, log, styleInstalled, text };

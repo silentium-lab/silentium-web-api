@@ -159,6 +159,26 @@ const input = (valueSrc, elementSrc) => {
   return valueSrc;
 };
 
+const text = (valueSrc, elementSrc) => {
+  silentium.value(
+    silentium.sourceAll([valueSrc, elementSrc]),
+    silentium.patron(([v, el]) => {
+      el.textContent = v;
+    })
+  );
+  return valueSrc;
+};
+
+const html = (elementSrc, valueSrc) => {
+  silentium.value(
+    silentium.sourceAll([valueSrc, elementSrc]),
+    silentium.patron(([v, el]) => {
+      el.innerHTML = v;
+    })
+  );
+  return valueSrc;
+};
+
 const log = (consoleLike, title, source) => {
   const all = silentium.sourceAll([source, title, consoleLike]);
   silentium.value(
@@ -175,7 +195,9 @@ exports.element = element;
 exports.fetched = fetched;
 exports.historyNewPate = historyNewPate;
 exports.historyPoppedPage = historyPoppedPage;
+exports.html = html;
 exports.input = input;
 exports.log = log;
 exports.styleInstalled = styleInstalled;
+exports.text = text;
 //# sourceMappingURL=silentium-web-api.cjs.map
