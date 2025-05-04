@@ -47,12 +47,15 @@ const historyNewPate = (pushSrc, urlSrc) => {
   };
 };
 
-const fetched = (fetch, request, errors) => {
+const fetched = (fetchSrc, requestSrc, errorsGuest) => {
   const result = silentium.sourceOf();
   silentium.value(
-    silentium.sourceAll([request, fetch]),
-    silentium.patron(([req, fetch2]) => {
-      fetch2.fetch(req).then((response) => {
+    silentium.sourceAll([requestSrc, fetchSrc]),
+    silentium.patron(([request, fetch]) => {
+      fetch.fetch(
+        request.url,
+        { ...request, url: void 0 }
+      ).then((response) => {
         let readableResponse;
         if (response.headers.get("Content-Type") === "application/json") {
           readableResponse = response.json();
@@ -66,7 +69,7 @@ const fetched = (fetch, request, errors) => {
       }).then((content) => {
         silentium.give(content, result);
       }).catch((error) => {
-        silentium.give(error, errors);
+        silentium.give(error, errorsGuest);
       });
     })
   );
@@ -179,6 +182,16 @@ const html = (elementSrc, valueSrc) => {
   return valueSrc;
 };
 
+const classToggled = (elementSrc, classSrc) => {
+  return silentium.sourceCombined(
+    elementSrc,
+    classSrc
+  )((g, element, theClass) => {
+    element.classList.toggle(theClass);
+    silentium.give(theClass, g);
+  });
+};
+
 const log = (consoleLike, title, source) => {
   const all = silentium.sourceAll([source, title, consoleLike]);
   silentium.value(
@@ -191,6 +204,7 @@ const log = (consoleLike, title, source) => {
 };
 
 exports.attribute = attribute;
+exports.classToggled = classToggled;
 exports.element = element;
 exports.fetched = fetched;
 exports.historyNewPate = historyNewPate;

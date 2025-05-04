@@ -1,4 +1,4 @@
-import { sourceOf, value, patronOnce, destroy, give, sourceAll, guestCast, patron, subSourceMany } from 'silentium';
+import { sourceOf, value, patronOnce, destroy, give, sourceAll, guestCast, patron, subSourceMany, sourceCombined } from 'silentium';
 
 const historyPoppedPage = (listenSrc, destroyedSrc) => {
   const result = sourceOf();
@@ -45,12 +45,15 @@ const historyNewPate = (pushSrc, urlSrc) => {
   };
 };
 
-const fetched = (fetch, request, errors) => {
+const fetched = (fetchSrc, requestSrc, errorsGuest) => {
   const result = sourceOf();
   value(
-    sourceAll([request, fetch]),
-    patron(([req, fetch2]) => {
-      fetch2.fetch(req).then((response) => {
+    sourceAll([requestSrc, fetchSrc]),
+    patron(([request, fetch]) => {
+      fetch.fetch(
+        request.url,
+        { ...request, url: void 0 }
+      ).then((response) => {
         let readableResponse;
         if (response.headers.get("Content-Type") === "application/json") {
           readableResponse = response.json();
@@ -64,7 +67,7 @@ const fetched = (fetch, request, errors) => {
       }).then((content) => {
         give(content, result);
       }).catch((error) => {
-        give(error, errors);
+        give(error, errorsGuest);
       });
     })
   );
@@ -177,6 +180,16 @@ const html = (elementSrc, valueSrc) => {
   return valueSrc;
 };
 
+const classToggled = (elementSrc, classSrc) => {
+  return sourceCombined(
+    elementSrc,
+    classSrc
+  )((g, element, theClass) => {
+    element.classList.toggle(theClass);
+    give(theClass, g);
+  });
+};
+
 const log = (consoleLike, title, source) => {
   const all = sourceAll([source, title, consoleLike]);
   value(
@@ -188,5 +201,5 @@ const log = (consoleLike, title, source) => {
   return source;
 };
 
-export { attribute, element, fetched, historyNewPate, historyPoppedPage, html, input, log, styleInstalled, text };
+export { attribute, classToggled, element, fetched, historyNewPate, historyPoppedPage, html, input, log, styleInstalled, text };
 //# sourceMappingURL=silentium-web-api.mjs.map

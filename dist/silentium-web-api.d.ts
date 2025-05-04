@@ -21,14 +21,17 @@ type PushStateAwareType = {
 declare const historyNewPate: (pushSrc: SourceType<PushStateAwareType>, urlSrc: SourceType<string>) => (guest: GuestType<string>) => void;
 
 type FetchType = {
-    fetch: (input: RequestInfo) => Promise<Response>;
+    fetch: (input: RequestInfo, options: RequestInfo) => Promise<Response>;
 };
+type FetchParams = {
+    url: string;
+} & RequestInit;
 /**
  * Wrapper around FetchAPI
  * https://kosukhin.github.io/patron-web-api/#/fetch/fetched
  * https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
  */
-declare const fetched: <T>(fetch: SourceType<FetchType>, request: SourceType<Partial<RequestInfo>>, errors: GuestType<Error>) => silentium.SourceChangeableType<T>;
+declare const fetched: <T>(fetchSrc: SourceType<FetchType>, requestSrc: SourceType<Partial<FetchParams>>, errorsGuest: GuestType<Error>) => silentium.SourceChangeableType<T>;
 
 type MutationAware = {
     observe(node: HTMLElement, config: {
@@ -62,6 +65,11 @@ declare const text: (valueSrc: SourceType<string>, elementSrc: SourceType<HTMLEl
 
 declare const html: (elementSrc: SourceType<HTMLElement>, valueSrc: SourceType<string>) => SourceType<string>;
 
+/**
+ * Gives ability to toggle classes of html element
+ */
+declare const classToggled: (elementSrc: SourceType<HTMLElement>, classSrc: SourceType<string>) => SourceType<string>;
+
 type LogAware = {
     log: (...args: unknown[]) => unknown;
 };
@@ -71,4 +79,4 @@ type LogAware = {
  */
 declare const log: <T>(consoleLike: SourceType<LogAware>, title: SourceType<string>, source: SourceType<T>) => SourceType<T>;
 
-export { attribute, element, fetched, historyNewPate, historyPoppedPage, html, input, log, styleInstalled, text };
+export { attribute, classToggled, element, fetched, historyNewPate, historyPoppedPage, html, input, log, styleInstalled, text };

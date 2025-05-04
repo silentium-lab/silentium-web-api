@@ -8,7 +8,10 @@ import {
   value,
 } from "silentium";
 
-type FetchType = { fetch: (input: RequestInfo) => Promise<Response> };
+type FetchType = {
+  fetch: (input: RequestInfo, options: RequestInfo) => Promise<Response>;
+};
+type FetchParams = { url: string } & RequestInit;
 
 /**
  * Wrapper around FetchAPI
@@ -16,17 +19,20 @@ type FetchType = { fetch: (input: RequestInfo) => Promise<Response> };
  * https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
  */
 export const fetched = <T>(
-  fetch: SourceType<FetchType>,
-  request: SourceType<Partial<RequestInfo>>,
-  errors: GuestType<Error>,
+  fetchSrc: SourceType<FetchType>,
+  requestSrc: SourceType<Partial<FetchParams>>,
+  errorsGuest: GuestType<Error>,
 ) => {
   const result = sourceOf<T>();
 
   value(
-    sourceAll([request, fetch]),
-    patron(([req, fetch]) => {
+    sourceAll([requestSrc, fetchSrc]),
+    patron(([request, fetch]) => {
       fetch
-        .fetch(req as RequestInfo)
+        .fetch(
+          request.url as string,
+          { ...request, url: undefined } as unknown as RequestInfo,
+        )
         .then((response) => {
           let readableResponse;
           if (response.headers.get("Content-Type") === "application/json") {
@@ -45,7 +51,7 @@ export const fetched = <T>(
           give(content, result);
         })
         .catch((error) => {
-          give(error, errors);
+          give(error, errorsGuest);
         });
     }),
   );
