@@ -1,11 +1,4 @@
-import {
-  give,
-  guestCast,
-  GuestType,
-  sourceAll,
-  SourceType,
-  value,
-} from "silentium";
+import { patron, sourceAll, SourceType, value } from "silentium";
 
 type PushStateAwareType = {
   pushState(data: Record<string, unknown>, title: string, url: string): void;
@@ -19,20 +12,19 @@ export const historyNewPate = (
   pushSrc: SourceType<PushStateAwareType>,
   urlSrc: SourceType<string>,
 ) => {
-  return (guest: GuestType<string>) => {
-    value(
-      sourceAll([urlSrc, pushSrc]),
-      guestCast(guest, ([url, push]) => {
-        push.pushState(
-          {
-            url,
-            date: Date.now(),
-          },
-          "",
+  value(
+    sourceAll([urlSrc, pushSrc]),
+    patron(([url, push]) => {
+      push.pushState(
+        {
           url,
-        );
-        give(url, guest);
-      }),
-    );
-  };
+          date: Date.now(),
+        },
+        "",
+        url,
+      );
+    }),
+  );
+
+  return urlSrc;
 };

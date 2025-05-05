@@ -1,4 +1,4 @@
-import { sourceOf, value, patronOnce, destroy, give, sourceAll, guestCast, patron, subSourceMany, sourceCombined } from 'silentium';
+import { sourceOf, value, patronOnce, destroy, give, sourceAll, patron, guestCast, subSourceMany, source, sourceCombined } from 'silentium';
 
 const historyPoppedPage = (listenSrc, destroyedSrc) => {
   const result = sourceOf();
@@ -27,22 +27,20 @@ const historyPoppedPage = (listenSrc, destroyedSrc) => {
 };
 
 const historyNewPate = (pushSrc, urlSrc) => {
-  return (guest) => {
-    value(
-      sourceAll([urlSrc, pushSrc]),
-      guestCast(guest, ([url, push]) => {
-        push.pushState(
-          {
-            url,
-            date: Date.now()
-          },
-          "",
-          url
-        );
-        give(url, guest);
-      })
-    );
-  };
+  value(
+    sourceAll([urlSrc, pushSrc]),
+    patron(([url, push]) => {
+      push.pushState(
+        {
+          url,
+          date: Date.now()
+        },
+        "",
+        url
+      );
+    })
+  );
+  return urlSrc;
 };
 
 const fetched = (fetchSrc, requestSrc, errorsGuest) => {
@@ -160,6 +158,25 @@ const input = (valueSrc, elementSrc) => {
   return valueSrc;
 };
 
+const link = (wrapperSrc, elementSelectorSrc, attributeSrc = source("href")) => {
+  const result = sourceOf();
+  value(
+    sourceAll([wrapperSrc, elementSelectorSrc, attributeSrc]),
+    ([wrapper, elementSelector, attribute]) => {
+      wrapper.addEventListener("click", (e) => {
+        if (e.target !== null && "matches" in e.target && typeof e.target.matches == "function" && e.target.matches(elementSelector)) {
+          e.preventDefault();
+          const href = e?.target?.getAttribute(attribute);
+          if (href) {
+            result.give(href);
+          }
+        }
+      });
+    }
+  );
+  return result;
+};
+
 const text = (valueSrc, elementSrc) => {
   value(
     sourceAll([valueSrc, elementSrc]),
@@ -201,5 +218,5 @@ const log = (consoleLike, title, source) => {
   return source;
 };
 
-export { attribute, classToggled, element, fetched, historyNewPate, historyPoppedPage, html, input, log, styleInstalled, text };
+export { attribute, classToggled, element, fetched, historyNewPate, historyPoppedPage, html, input, link, log, styleInstalled, text };
 //# sourceMappingURL=silentium-web-api.js.map

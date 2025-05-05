@@ -29,22 +29,20 @@ const historyPoppedPage = (listenSrc, destroyedSrc) => {
 };
 
 const historyNewPate = (pushSrc, urlSrc) => {
-  return (guest) => {
-    silentium.value(
-      silentium.sourceAll([urlSrc, pushSrc]),
-      silentium.guestCast(guest, ([url, push]) => {
-        push.pushState(
-          {
-            url,
-            date: Date.now()
-          },
-          "",
-          url
-        );
-        silentium.give(url, guest);
-      })
-    );
-  };
+  silentium.value(
+    silentium.sourceAll([urlSrc, pushSrc]),
+    silentium.patron(([url, push]) => {
+      push.pushState(
+        {
+          url,
+          date: Date.now()
+        },
+        "",
+        url
+      );
+    })
+  );
+  return urlSrc;
 };
 
 const fetched = (fetchSrc, requestSrc, errorsGuest) => {
@@ -162,6 +160,25 @@ const input = (valueSrc, elementSrc) => {
   return valueSrc;
 };
 
+const link = (wrapperSrc, elementSelectorSrc, attributeSrc = silentium.source("href")) => {
+  const result = silentium.sourceOf();
+  silentium.value(
+    silentium.sourceAll([wrapperSrc, elementSelectorSrc, attributeSrc]),
+    ([wrapper, elementSelector, attribute]) => {
+      wrapper.addEventListener("click", (e) => {
+        if (e.target !== null && "matches" in e.target && typeof e.target.matches == "function" && e.target.matches(elementSelector)) {
+          e.preventDefault();
+          const href = e?.target?.getAttribute(attribute);
+          if (href) {
+            result.give(href);
+          }
+        }
+      });
+    }
+  );
+  return result;
+};
+
 const text = (valueSrc, elementSrc) => {
   silentium.value(
     silentium.sourceAll([valueSrc, elementSrc]),
@@ -211,6 +228,7 @@ exports.historyNewPate = historyNewPate;
 exports.historyPoppedPage = historyPoppedPage;
 exports.html = html;
 exports.input = input;
+exports.link = link;
 exports.log = log;
 exports.styleInstalled = styleInstalled;
 exports.text = text;
