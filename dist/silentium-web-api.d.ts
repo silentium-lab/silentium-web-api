@@ -33,6 +33,19 @@ type FetchParams = {
  */
 declare const fetched: <T>(fetchSrc: SourceType<FetchType>, requestSrc: SourceType<Partial<FetchParams>>, errorsGuest: GuestType<Error>) => silentium.SourceChangeableType<T>;
 
+type MutationAware$1 = {
+    observe(node: HTMLElement, config: {
+        childList: boolean;
+        subtree: boolean;
+    }): void;
+    disconnect(): void;
+};
+/**
+ * Helps to find element by selector
+ * https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API
+ */
+declare const element: <T extends HTMLElement>(createObserver: PersonalType<MutationAware$1>, documentSrc: SourceType<Document>, selectorSrc: SourceType<string>) => SourceType<T>;
+
 type MutationAware = {
     observe(node: HTMLElement, config: {
         childList: boolean;
@@ -44,13 +57,13 @@ type MutationAware = {
  * Helps to find element by selector
  * https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API
  */
-declare const element: <T extends HTMLElement>(createObserver: PersonalType<MutationAware>, documentSrc: SourceType<Document>, selectorSrc: SourceType<string>) => SourceType<T>;
+declare const elements: <T extends HTMLElement[]>(createObserver: PersonalType<MutationAware>, documentSrc: SourceType<Document>, selectorSrc: SourceType<string>) => SourceType<T>;
 
 /**
  * Return content attribute of HTMLElement
  * https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API
  */
-declare const attribute: (elementSrc: SourceType<HTMLElement>, attrNameSrc: SourceType<string>, defaultValueSrc?: SourceType<string>) => silentium.SourceChangeableType<string>;
+declare const attribute: (attrNameSrc: SourceType<string>, elementSrc: SourceType<HTMLElement>, defaultValueSrc?: SourceType<string>) => silentium.SourceChangeableType<string>;
 
 /**
  * Render styles to document
@@ -67,6 +80,8 @@ declare const input: (valueSrc: SourceChangeableType<InputValue>, elementSrc: So
  */
 declare const link: (wrapperSrc: SourceType<HTMLElement>, elementSelectorSrc: SourceType<string>, attributeSrc?: silentium.SourceExecutorType<string>) => SourceType<string>;
 
+declare const visible: (valueSrc: SourceType<boolean>, elementSrc: SourceType<HTMLElement>, visibilityTypeSrc?: SourceType<string>) => SourceType<boolean>;
+
 declare const text: (valueSrc: SourceType<string>, elementSrc: SourceType<HTMLElement>) => SourceType<string>;
 
 declare const html: (elementSrc: SourceType<HTMLElement>, valueSrc: SourceType<string>) => SourceType<string>;
@@ -74,7 +89,9 @@ declare const html: (elementSrc: SourceType<HTMLElement>, valueSrc: SourceType<s
 /**
  * Gives ability to toggle classes of html element
  */
-declare const classToggled: (elementSrc: SourceType<HTMLElement>, classSrc: SourceType<string>) => any;
+declare const classToggled: (elementSrc: SourceType<HTMLElement>, classSrc: SourceType<string>) => SourceType<string>;
+declare const classAdded: (elementSrc: SourceType<HTMLElement>, classSrc: SourceType<string>) => SourceType<string>;
+declare const classRemoved: (elementSrc: SourceType<HTMLElement>, classSrc: SourceType<string>) => SourceType<string>;
 
 type LogAware = {
     log: (...args: unknown[]) => unknown;
@@ -85,4 +102,4 @@ type LogAware = {
  */
 declare const log: <T>(consoleLike: SourceType<LogAware>, title: SourceType<string>, source: SourceType<T>) => SourceType<T>;
 
-export { attribute, classToggled, element, fetched, historyNewPate, historyPoppedPage, html, input, link, log, styleInstalled, text };
+export { attribute, classAdded, classRemoved, classToggled, element, elements, fetched, historyNewPate, historyPoppedPage, html, input, link, log, styleInstalled, text, visible };

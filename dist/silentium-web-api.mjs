@@ -104,7 +104,39 @@ const element = (createObserver, documentSrc, selectorSrc) => {
   };
 };
 
-const attribute = (elementSrc, attrNameSrc, defaultValueSrc = "") => {
+const elements = (createObserver, documentSrc, selectorSrc) => {
+  return (guest) => {
+    value(
+      sourceAll([selectorSrc, documentSrc]),
+      guestCast(guest, ([selector, document]) => {
+        const element = document.querySelectorAll(selector);
+        if (element) {
+          give(Array.from(element), guest);
+        } else if (createObserver) {
+          const targetNode = document.body;
+          const config = { childList: true, subtree: true };
+          const observer = createObserver.get((mutationsList) => {
+            for (const mutation of mutationsList) {
+              if (mutation.type === "childList") {
+                const element2 = document.querySelectorAll(selector);
+                if (element2) {
+                  give(Array.from(element2), guest);
+                  observer.disconnect();
+                  break;
+                }
+              }
+            }
+          });
+          observer.observe(targetNode, config);
+        } else {
+          throw new Error(`Element with selector=${selector} was not found!`);
+        }
+      })
+    );
+  };
+};
+
+const attribute = (attrNameSrc, elementSrc, defaultValueSrc = "") => {
   const result = sourceOf();
   subSourceMany(result, [elementSrc, attrNameSrc, defaultValueSrc]);
   value(
@@ -177,6 +209,16 @@ const link = (wrapperSrc, elementSelectorSrc, attributeSrc = source("href")) => 
   return result;
 };
 
+const visible = (valueSrc, elementSrc, visibilityTypeSrc = "block") => {
+  value(
+    sourceAll([valueSrc, elementSrc, visibilityTypeSrc]),
+    patron(([v, el, vt]) => {
+      el.style.display = v ? vt : "none";
+    })
+  );
+  return valueSrc;
+};
+
 const text = (valueSrc, elementSrc) => {
   value(
     sourceAll([valueSrc, elementSrc]),
@@ -206,6 +248,24 @@ const classToggled = (elementSrc, classSrc) => {
     give(theClass, g);
   });
 };
+const classAdded = (elementSrc, classSrc) => {
+  return sourceCombined(
+    elementSrc,
+    classSrc
+  )((g, element, theClass) => {
+    element.classList.add(theClass);
+    give(theClass, g);
+  });
+};
+const classRemoved = (elementSrc, classSrc) => {
+  return sourceCombined(
+    elementSrc,
+    classSrc
+  )((g, element, theClass) => {
+    element.classList.remove(theClass);
+    give(theClass, g);
+  });
+};
 
 const log = (consoleLike, title, source) => {
   const all = sourceAll([source, title, consoleLike]);
@@ -218,5 +278,5 @@ const log = (consoleLike, title, source) => {
   return source;
 };
 
-export { attribute, classToggled, element, fetched, historyNewPate, historyPoppedPage, html, input, link, log, styleInstalled, text };
+export { attribute, classAdded, classRemoved, classToggled, element, elements, fetched, historyNewPate, historyPoppedPage, html, input, link, log, styleInstalled, text, visible };
 //# sourceMappingURL=silentium-web-api.mjs.map

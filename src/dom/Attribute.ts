@@ -13,8 +13,8 @@ import {
  * https://developer.mozilla.org/en-US/docs/Web/API/HTML_DOM_API
  */
 export const attribute = (
-  elementSrc: SourceType<HTMLElement>,
   attrNameSrc: SourceType<string>,
+  elementSrc: SourceType<HTMLElement>,
   defaultValueSrc: SourceType<string> = "",
 ) => {
   const result = sourceOf<string>();

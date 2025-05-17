@@ -106,7 +106,39 @@ const element = (createObserver, documentSrc, selectorSrc) => {
   };
 };
 
-const attribute = (elementSrc, attrNameSrc, defaultValueSrc = "") => {
+const elements = (createObserver, documentSrc, selectorSrc) => {
+  return (guest) => {
+    silentium.value(
+      silentium.sourceAll([selectorSrc, documentSrc]),
+      silentium.guestCast(guest, ([selector, document]) => {
+        const element = document.querySelectorAll(selector);
+        if (element) {
+          silentium.give(Array.from(element), guest);
+        } else if (createObserver) {
+          const targetNode = document.body;
+          const config = { childList: true, subtree: true };
+          const observer = createObserver.get((mutationsList) => {
+            for (const mutation of mutationsList) {
+              if (mutation.type === "childList") {
+                const element2 = document.querySelectorAll(selector);
+                if (element2) {
+                  silentium.give(Array.from(element2), guest);
+                  observer.disconnect();
+                  break;
+                }
+              }
+            }
+          });
+          observer.observe(targetNode, config);
+        } else {
+          throw new Error(`Element with selector=${selector} was not found!`);
+        }
+      })
+    );
+  };
+};
+
+const attribute = (attrNameSrc, elementSrc, defaultValueSrc = "") => {
   const result = silentium.sourceOf();
   silentium.subSourceMany(result, [elementSrc, attrNameSrc, defaultValueSrc]);
   silentium.value(
@@ -179,6 +211,16 @@ const link = (wrapperSrc, elementSelectorSrc, attributeSrc = silentium.source("h
   return result;
 };
 
+const visible = (valueSrc, elementSrc, visibilityTypeSrc = "block") => {
+  silentium.value(
+    silentium.sourceAll([valueSrc, elementSrc, visibilityTypeSrc]),
+    silentium.patron(([v, el, vt]) => {
+      el.style.display = v ? vt : "none";
+    })
+  );
+  return valueSrc;
+};
+
 const text = (valueSrc, elementSrc) => {
   silentium.value(
     silentium.sourceAll([valueSrc, elementSrc]),
@@ -208,6 +250,24 @@ const classToggled = (elementSrc, classSrc) => {
     silentium.give(theClass, g);
   });
 };
+const classAdded = (elementSrc, classSrc) => {
+  return silentium.sourceCombined(
+    elementSrc,
+    classSrc
+  )((g, element, theClass) => {
+    element.classList.add(theClass);
+    silentium.give(theClass, g);
+  });
+};
+const classRemoved = (elementSrc, classSrc) => {
+  return silentium.sourceCombined(
+    elementSrc,
+    classSrc
+  )((g, element, theClass) => {
+    element.classList.remove(theClass);
+    silentium.give(theClass, g);
+  });
+};
 
 const log = (consoleLike, title, source) => {
   const all = silentium.sourceAll([source, title, consoleLike]);
@@ -221,8 +281,11 @@ const log = (consoleLike, title, source) => {
 };
 
 exports.attribute = attribute;
+exports.classAdded = classAdded;
+exports.classRemoved = classRemoved;
 exports.classToggled = classToggled;
 exports.element = element;
+exports.elements = elements;
 exports.fetched = fetched;
 exports.historyNewPate = historyNewPate;
 exports.historyPoppedPage = historyPoppedPage;
@@ -232,4 +295,5 @@ exports.link = link;
 exports.log = log;
 exports.styleInstalled = styleInstalled;
 exports.text = text;
+exports.visible = visible;
 //# sourceMappingURL=silentium-web-api.cjs.map
