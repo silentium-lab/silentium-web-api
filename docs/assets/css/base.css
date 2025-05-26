@@ -1,3 +1,10 @@
 html, body {
     height: 100%;
 }
+
+.lang {
+    height: 32px;
+    margin-right: 6px;
+    outline: none;
+    cursor: pointer;
+}

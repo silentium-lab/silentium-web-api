@@ -29,13 +29,14 @@
       rel="stylesheet"
       href="./assets/css/base.css"
     />
+    <link rel="stylesheet" href="./assets/css/custom.css" />
     <link rel="icon" href="./favicon.ico" type="image/x-icon" />
     <script type="importmap">
       {
         "imports": {
-          "silentium": "https://cdn.jsdelivr.net/npm/silentium@0.0.11/dist/silentium.min.mjs",
-          "silentium-web-api": "https://cdn.jsdelivr.net/npm/silentium-web-api@0.0.3/dist/silentium-web-api.min.mjs",
-          "silentium-components": "https://cdn.jsdelivr.net/npm/silentium-components@0.0.5/dist/silentium-components.min.mjs"
+          "silentium": "https://cdn.jsdelivr.net/npm/silentium@0.0.35/dist/silentium.min.mjs",
+          "silentium-web-api": "https://cdn.jsdelivr.net/npm/silentium-web-api@0.0.7/dist/silentium-web-api.min.mjs",
+          "silentium-components": "https://cdn.jsdelivr.net/npm/silentium-components@0.0.20/dist/silentium-components.min.mjs"
         }
       }
     </script>
@@ -50,7 +51,7 @@
         <div
           class="flex title-font font-medium items-center text-gray-900 mb-4 md:mb-0"
         >
-        <a href="/" class="text-xl gap-2 flex items-center active">
+        <a href="#/" class="dynamic-navigation text-xl gap-2 flex items-center active">
           <img src="./assets/img/logo.svg" width="40" height="44" />
           Silentium Web API
         </a>
@@ -59,6 +60,10 @@
           class="md:mr-auto md:ml-4 md:py-1 md:pl-4 md:border-l md:border-gray-400 flex flex-wrap items-center text-base justify-center"
         >
         </nav>
+        <select class="lang mr-1 py-1 px-1 block lang-select" onchange="window.langSrc.give(this.value)">
+          <option value="ru">RU</option>
+          <option value="en">EN</option>
+        </select>
         <button
           onclick="location.href='https://github.com/kosukhin/patron-components'"
           class="inline-flex gap-1 items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-base mt-4 md:mt-0"
