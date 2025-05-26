@@ -11,6 +11,8 @@
 </p>
 <br/>
 
+[Documentation](https://silentium-lab.github.io/silentium-web-api/#/en/)
+
 To install the library you can use the command.
 
 ```bash
