@@ -1,4 +1,4 @@
-import { sourceOf, value, patronOnce, destroy, give, sourceAll, patron, guestCast, subSourceMany, source, sourceCombined } from 'silentium';
+import { sourceOf, value, patronOnce, destroy, give, sourceAll, patron, guestCast, subSourceMany, source, sourceOnce, sourceSync, sourceDestroyable, sourceCombined } from 'silentium';
 
 const historyPoppedPage = (listenSrc, destroyedSrc) => {
   const result = sourceOf();
@@ -219,6 +219,29 @@ const visible = (valueSrc, elementSrc, visibilityTypeSrc = "block") => {
   return valueSrc;
 };
 
+const event = (elementSrc, eventNameSrc) => {
+  const elementOnceSrc = sourceOnce(elementSrc);
+  const eventNameSync = sourceSync(eventNameSrc);
+  return sourceDestroyable((g) => {
+    let el = null;
+    const eventHandler = (e) => {
+      give(e, g);
+    };
+    value(
+      elementOnceSrc,
+      patronOnce((element) => {
+        el = element;
+        element.addEventListener(eventNameSync.syncValue(), eventHandler);
+      })
+    );
+    return () => {
+      if (el !== null) {
+        el.removeEventListener(eventNameSync.syncValue(), eventHandler);
+      }
+    };
+  });
+};
+
 const text = (valueSrc, elementSrc) => {
   value(
     sourceAll([valueSrc, elementSrc]),
@@ -278,5 +301,5 @@ const log = (consoleLike, title, source) => {
   return source;
 };
 
-export { attribute, classAdded, classRemoved, classToggled, element, elements, fetched, historyNewPate, historyPoppedPage, html, input, link, log, styleInstalled, text, visible };
+export { attribute, classAdded, classRemoved, classToggled, element, elements, event, fetched, historyNewPate, historyPoppedPage, html, input, link, log, styleInstalled, text, visible };
 //# sourceMappingURL=silentium-web-api.js.map

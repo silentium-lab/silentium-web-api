@@ -78,9 +78,14 @@ declare const input: (valueSrc: SourceChangeableType<InputValue>, elementSrc: So
  * Represents link what when it will be clicked, then source will be
  * filled with clicked href value
  */
-declare const link: (wrapperSrc: SourceType<HTMLElement>, elementSelectorSrc: SourceType<string>, attributeSrc?: silentium.SourceExecutorType<string>) => SourceType<string>;
+declare const link: (wrapperSrc: SourceType<HTMLElement>, elementSelectorSrc: SourceType<string>, attributeSrc?: silentium.SourceExecutorType<string, unknown>) => SourceType<string>;
 
 declare const visible: (valueSrc: SourceType<boolean>, elementSrc: SourceType<HTMLElement>, visibilityTypeSrc?: SourceType<string>) => SourceType<boolean>;
+
+/**
+ * Creates a source that emits events from a DOM element.
+ */
+declare const event: <T>(elementSrc: SourceType<HTMLElement>, eventNameSrc: SourceType<string>) => SourceType<T>;
 
 declare const text: (valueSrc: SourceType<string>, elementSrc: SourceType<HTMLElement>) => SourceType<string>;
 
@@ -102,4 +107,4 @@ type LogAware = {
  */
 declare const log: <T>(consoleLike: SourceType<LogAware>, title: SourceType<string>, source: SourceType<T>) => SourceType<T>;
 
-export { attribute, classAdded, classRemoved, classToggled, element, elements, fetched, historyNewPate, historyPoppedPage, html, input, link, log, styleInstalled, text, visible };
+export { attribute, classAdded, classRemoved, classToggled, element, elements, event, fetched, historyNewPate, historyPoppedPage, html, input, link, log, styleInstalled, text, visible };

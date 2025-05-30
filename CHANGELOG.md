@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.9](https://github.com/silentium-lab/silentium-web-api/compare/v0.0.8...v0.0.9) (2025-05-30)
+
+### [0.0.8](https://github.com/silentium-lab/silentium-web-api/compare/v0.0.7...v0.0.8) (2025-05-30)
+
+
+### Features
+
+* **11-event-component:** added event component ([def1e7c](https://github.com/silentium-lab/silentium-web-api/commit/def1e7c20e67a7ca287932dcd4769c60a4ca6c98))
+
 ### [0.0.7](https://github.com/silentium-lab/silentium-web-api/compare/v0.0.6...v0.0.7) (2025-05-25)
 
 
