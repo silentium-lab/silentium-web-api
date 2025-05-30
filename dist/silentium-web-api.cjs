@@ -221,6 +221,29 @@ const visible = (valueSrc, elementSrc, visibilityTypeSrc = "block") => {
   return valueSrc;
 };
 
+const event = (elementSrc, eventNameSrc) => {
+  const elementOnceSrc = silentium.sourceOnce(elementSrc);
+  const eventNameSync = silentium.sourceSync(eventNameSrc);
+  return silentium.sourceDestroyable((g) => {
+    let el = null;
+    const eventHandler = (e) => {
+      silentium.give(e, g);
+    };
+    silentium.value(
+      elementOnceSrc,
+      silentium.patronOnce((element) => {
+        el = element;
+        element.addEventListener(eventNameSync.syncValue(), eventHandler);
+      })
+    );
+    return () => {
+      if (el !== null) {
+        el.removeEventListener(eventNameSync.syncValue(), eventHandler);
+      }
+    };
+  });
+};
+
 const text = (valueSrc, elementSrc) => {
   silentium.value(
     silentium.sourceAll([valueSrc, elementSrc]),
@@ -286,6 +309,7 @@ exports.classRemoved = classRemoved;
 exports.classToggled = classToggled;
 exports.element = element;
 exports.elements = elements;
+exports.event = event;
 exports.fetched = fetched;
 exports.historyNewPate = historyNewPate;
 exports.historyPoppedPage = historyPoppedPage;
