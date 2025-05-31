@@ -9,31 +9,31 @@ module.exports = {
   types: [
     {
       value: "feat",
-      name: "feat: Добавление нового функционала",
+      name: "feat: Adding new functionality",
     },
     {
       value: "refactor",
-      name: "refactor: Правки кода без исправления ошибок или добавления новых функций",
+      name: "refactor: Code changes without fixing bugs or adding new features",
     },
     {
       value: "fix",
-      name: "fix: Исправление ошибок",
+      name: "fix: Bug fixes",
     },
     {
       value: "build",
-      name: "build: Сборка проекта или изменения внешних зависимостей",
+      name: "build: Project build or external dependency changes",
     },
     {
       value: "docs",
-      name: "docs: Обновление документации",
+      name: "docs: Documentation updates",
     },
     {
       value: "docs",
-      name: "docs: Правки по документации проекта или отдельных частей проекта",
+      name: "docs: Project documentation or individual parts of project documentation changes",
     },
     {
       value: "test",
-      name: "test: Добавление тестов",
+      name: "test: Adding tests",
     },
   ],
   scopes: [
@@ -46,5 +46,5 @@ module.exports = {
 
   allowBreakingChanges: false,
 
-  subjectLimit: 72,
+  subjectLimit: 172,
 };
