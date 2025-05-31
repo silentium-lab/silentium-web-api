@@ -1,4 +1,4 @@
-import { personalClass, sourceOf, sourceSync } from "silentium";
+import { lazyClass, sourceOf, sourceSync } from "silentium";
 import { jsdomDocument } from "silentium-jsdom";
 import { link } from "../../dom/controls/Link";
 import { expect, test } from "vitest";
@@ -22,10 +22,10 @@ test("Link.test", () => {
   ).syncValue();
   const window = sourceSync(dom).syncValue().window;
   const wrapperSrc = sourceSync(
-    element(personalClass(Mutation), document, ".menu"),
+    element(lazyClass(Mutation), document, ".menu"),
   );
   const linkEl = sourceSync(
-    element(personalClass(Mutation), document, "#the-link"),
+    element(lazyClass(Mutation), document, "#the-link"),
   ).syncValue();
 
   const linkSrc = sourceSync(link(wrapperSrc, "#the-link"));

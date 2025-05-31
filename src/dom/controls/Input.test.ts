@@ -1,4 +1,4 @@
-import { personalClass, sourceOf, sourceSync } from "silentium";
+import { lazyClass, sourceOf, sourceSync } from "silentium";
 import { jsdomDocument } from "silentium-jsdom";
 import { element } from "../../dom/Element";
 import { expect, test } from "vitest";
@@ -17,7 +17,7 @@ test("Input.test", () => {
     jsdomDocument(`<div class="menu"><input id="input" /></div>`),
   ).syncValue();
   const inputElement = sourceSync(
-    element<HTMLInputElement>(personalClass(Mutation), document, "#input"),
+    element<HTMLInputElement>(lazyClass(Mutation), document, "#input"),
   );
 
   const inputValueSrc = sourceOf("hello world");
