@@ -1,14 +1,4 @@
-import {
-  give,
-  GuestType,
-  InformationType,
-  OwnerType,
-  patron,
-  sourceAll,
-  sourceOf,
-  SourceType,
-  value,
-} from "silentium";
+import { InformationType, OwnerType } from "silentium";
 
 export interface FetchRequestType {
   baseUrl?: string;
@@ -25,10 +15,44 @@ export interface FetchRequestType {
  * https://kosukhin.github.io/patron-web-api/#/fetch/fetched
  * https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
  */
-export const fetchedData = <T>(
+export const fetchedData = (
   requestSrc: InformationType<Partial<FetchRequestType>>,
   error: OwnerType<unknown>,
   abortSrc?: InformationType<unknown>,
-): InformationType<T> => {
-  return () => {};
+): InformationType<string> => {
+  return (o) => {
+    const abortController = new AbortController();
+    if (abortSrc) {
+      abortSrc((abort) => {
+        if (abort) {
+          abortController.abort();
+        }
+      });
+    }
+    requestSrc((request) => {
+      const { baseUrl, url, method, credentials, headers, body, query } =
+        request;
+      let urlWithQuery: URL;
+      try {
+        urlWithQuery = new URL(String(url), baseUrl);
+      } catch {
+        error(new Error("Invalid URL"));
+        return;
+      }
+      Object.entries(query ?? {}).forEach(([key, value]) =>
+        urlWithQuery.searchParams.append(key, String(value)),
+      );
+      const options: RequestInit = {
+        method,
+        credentials,
+        headers,
+        body: body as BodyInit,
+        signal: abortController.signal,
+      };
+      fetch(urlWithQuery.toString(), options)
+        .then((response) => response.text())
+        .then((data) => o(data))
+        .catch((error) => error(error));
+    });
+  };
 };
