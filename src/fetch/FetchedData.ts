@@ -17,7 +17,7 @@ export interface FetchRequestType {
  */
 export const fetchedData = (
   requestSrc: InformationType<Partial<FetchRequestType>>,
-  error: OwnerType<unknown>,
+  errorOwner: OwnerType<unknown>,
   abortSrc?: InformationType<unknown>,
 ): InformationType<string> => {
   return (o) => {
@@ -36,7 +36,7 @@ export const fetchedData = (
       try {
         urlWithQuery = new URL(String(url), baseUrl);
       } catch {
-        error(new Error("Invalid URL"));
+        errorOwner(new Error("Invalid URL"));
         return;
       }
       Object.entries(query ?? {}).forEach(([key, value]) =>
@@ -52,7 +52,9 @@ export const fetchedData = (
       fetch(urlWithQuery.toString(), options)
         .then((response) => response.text())
         .then((data) => o(data))
-        .catch((error) => error(error));
+        .catch((error) => {
+          errorOwner(error);
+        });
     });
   };
 };
