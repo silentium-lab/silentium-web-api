@@ -6,17 +6,21 @@ import { FetchRequestType } from "./FetchedData";
  */
 export const requestJson = (
   requestSrc: InformationType<Partial<FetchRequestType>>,
-  error: OwnerType<unknown>,
+  errorOwner?: OwnerType<unknown>,
 ): InformationType<Partial<FetchRequestType>> => {
   return (o) => {
     requestSrc((r) => {
       try {
         o({
           ...r,
+          headers: {
+            ...(r.headers ?? {}),
+            "Content-Type": "application/json",
+          },
           body: JSON.stringify(r.body),
         });
       } catch {
-        error(new Error("Failed to parse JSON"));
+        errorOwner?.(new Error("Failed to parse JSON"));
       }
     });
   };
