@@ -1,15 +1,15 @@
-import partial from "lodash.partial";
-import { expect, test } from "vitest";
+import { expect, test, vi } from "vitest";
 import { log } from "../console/Log";
+import { i } from "silentium";
 
 test("Log.test", () => {
-  const fakeLog = {
-    buffer: "",
-    log(...args: unknown[]) {
-      this.buffer += args.join(" ");
-    },
-  };
-  const logger = partial(log<string>, fakeLog, "title");
-  logger("test");
-  expect(fakeLog.buffer).toBe("LOG: title test");
+  const consoleLog = vi.fn();
+  vi.spyOn(console, "log").mockImplementation(consoleLog);
+
+  const g = vi.fn();
+  const afterLog = log(i("src"), i("title"));
+  afterLog(g);
+
+  expect(g).toHaveBeenLastCalledWith("src");
+  expect(consoleLog).toHaveBeenLastCalledWith("LOG:", "title", "src");
 });
