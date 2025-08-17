@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.10](https://github.com/silentium-lab/silentium-web-api/compare/v0.0.9...v0.0.10) (2025-08-17)
+
+
+### Features
+
+* **pure:** animationFrame done ([af76065](https://github.com/silentium-lab/silentium-web-api/commit/af76065f45aab520c2755712fce8aabf84b5eda5))
+
+
+### Bug Fixes
+
+* **main:** fixe node modules lock file ([e2d959b](https://github.com/silentium-lab/silentium-web-api/commit/e2d959b4169206a6ae761a9d8d8e2a76832ee968))
+* **pure:** all old code removed ([c50b90b](https://github.com/silentium-lab/silentium-web-api/commit/c50b90b47fa1d6ef3baa5996987453de2467f467))
+* **pure:** fetchedData done ([4dccbad](https://github.com/silentium-lab/silentium-web-api/commit/4dccbad04423e459335a45e9029c1c8c1898262b))
+* **pure:** log done and tested ([3ca8125](https://github.com/silentium-lab/silentium-web-api/commit/3ca8125bcc7835e691863acbed6ac623c468ffee))
+* **pure:** request json component ([e7edf00](https://github.com/silentium-lab/silentium-web-api/commit/e7edf002bd71b3c576d208bceaf731a663f85240))
+* **pure:** work on fetch component ([74f4bdf](https://github.com/silentium-lab/silentium-web-api/commit/74f4bdff7cf626d3bd32dd6902833a0ec6bef901))
+* **pure:** work on fetchedData ([c90cb57](https://github.com/silentium-lab/silentium-web-api/commit/c90cb57168460e03c700261f2c3a605b0e321aaf))
+* **pure:** work on pure version ([cd19e39](https://github.com/silentium-lab/silentium-web-api/commit/cd19e3984865079f9eef19d816127231d1216c23))
+
 ### [0.0.9](https://github.com/silentium-lab/silentium-web-api/compare/v0.0.8...v0.0.9) (2025-05-30)
 
 ### [0.0.8](https://github.com/silentium-lab/silentium-web-api/compare/v0.0.7...v0.0.8) (2025-05-30)
