@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.11](https://github.com/silentium-lab/silentium-web-api/compare/v0.0.10...v0.0.11) (2025-08-18)
+
+
+### Features
+
+* **pure:** elements component ([a43e3e9](https://github.com/silentium-lab/silentium-web-api/commit/a43e3e96f2068251e8b1f5be0f0e785c2b65d590))
+
 ### [0.0.10](https://github.com/silentium-lab/silentium-web-api/compare/v0.0.9...v0.0.10) (2025-08-17)
 
 
