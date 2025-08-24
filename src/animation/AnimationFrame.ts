@@ -1,4 +1,4 @@
-import { TheInformation, TheOwner } from "silentium";
+import { OwnerType, TheInformation } from "silentium";
 
 /**
  * Presents animation frame and provides it as a callback
@@ -6,7 +6,7 @@ import { TheInformation, TheOwner } from "silentium";
  * is ready to render a new frame.
  */
 export class AnimationFrame extends TheInformation<number> {
-  public value(o: TheOwner<number>): this {
+  public value(o: OwnerType<number>): this {
     requestAnimationFrame(() => {
       o.give(1);
     });

@@ -1,14 +1,14 @@
-import { From, TheInformation, TheOwner } from "silentium";
+import { From, InformationType, OwnerType, TheInformation } from "silentium";
 
 /**
  * Represents a collection of elements that match a given CSS selector.
  */
 export class Elements extends TheInformation<HTMLElement[]> {
-  public constructor(private selectorSrc: TheInformation<string>) {
+  public constructor(private selectorSrc: InformationType<string>) {
     super(selectorSrc);
   }
 
-  public value(o: TheOwner<HTMLElement[]>): this {
+  public value(o: OwnerType<HTMLElement[]>): this {
     this.selectorSrc.value(
       new From((selectorContent) => {
         const element = document.querySelectorAll(selectorContent);

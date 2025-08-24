@@ -1,4 +1,4 @@
-import { From, TheInformation, TheOwner } from "silentium";
+import { From, InformationType, OwnerType, TheInformation } from "silentium";
 
 export interface FetchRequestType {
   baseUrl?: string;
@@ -17,14 +17,14 @@ export interface FetchRequestType {
  */
 export class FetchedData extends TheInformation<string> {
   public constructor(
-    private requestSrc: TheInformation<Partial<FetchRequestType>>,
-    private errorOwner?: TheOwner<unknown>,
-    private abortSrc?: TheInformation<unknown>,
+    private requestSrc: InformationType<Partial<FetchRequestType>>,
+    private errorOwner?: OwnerType<unknown>,
+    private abortSrc?: InformationType<unknown>,
   ) {
     super(requestSrc, abortSrc);
   }
 
-  public value(o: TheOwner<string>): this {
+  public value(o: OwnerType<string>): this {
     const abortController = new AbortController();
     if (this.abortSrc) {
       this.abortSrc.value(

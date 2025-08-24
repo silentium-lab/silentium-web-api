@@ -1,4 +1,4 @@
-import { From, TheInformation, TheOwner } from "silentium";
+import { From, InformationType, OwnerType, TheInformation } from "silentium";
 import { FetchRequestType } from "./FetchedData";
 
 /**
@@ -6,13 +6,13 @@ import { FetchRequestType } from "./FetchedData";
  */
 export class RequestJson extends TheInformation<Partial<FetchRequestType>> {
   public constructor(
-    private requestSrc: TheInformation<Partial<FetchRequestType>>,
-    private errorOwner?: TheOwner<unknown>,
+    private requestSrc: InformationType<Partial<FetchRequestType>>,
+    private errorOwner?: OwnerType<unknown>,
   ) {
     super(requestSrc, errorOwner);
   }
 
-  public value(o: TheOwner<Partial<FetchRequestType>>): this {
+  public value(o: OwnerType<Partial<FetchRequestType>>): this {
     this.requestSrc.value(
       new From((r) => {
         try {

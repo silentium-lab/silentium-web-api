@@ -1,4 +1,10 @@
-import { All, From, TheInformation, TheOwner } from "silentium";
+import {
+  All,
+  From,
+  InformationType,
+  OwnerType,
+  TheInformation,
+} from "silentium";
 
 /**
  * Helps to print logs to somewhere
@@ -6,13 +12,13 @@ import { All, From, TheInformation, TheOwner } from "silentium";
  */
 export class Log<T> extends TheInformation<T> {
   public constructor(
-    private sourceSrc: TheInformation<T>,
-    private titleSrc: TheInformation<string>,
+    private sourceSrc: InformationType<T>,
+    private titleSrc: InformationType<string>,
   ) {
     super(sourceSrc, titleSrc);
   }
 
-  public value(o: TheOwner<T>): this {
+  public value(o: OwnerType<T>): this {
     new All(this.sourceSrc, this.titleSrc).value(
       new From(([source, title]) => {
         console.log("LOG:", title, source);
