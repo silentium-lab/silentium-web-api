@@ -1,4 +1,4 @@
-import { TheInformation, TheOwner } from 'silentium';
+import { TheInformation, InformationType, OwnerType } from 'silentium';
 
 interface FetchRequestType {
     baseUrl?: string;
@@ -18,8 +18,8 @@ declare class FetchedData extends TheInformation<string> {
     private requestSrc;
     private errorOwner?;
     private abortSrc?;
-    constructor(requestSrc: TheInformation<Partial<FetchRequestType>>, errorOwner?: TheOwner<unknown> | undefined, abortSrc?: TheInformation<unknown> | undefined);
-    value(o: TheOwner<string>): this;
+    constructor(requestSrc: InformationType<Partial<FetchRequestType>>, errorOwner?: OwnerType<unknown> | undefined, abortSrc?: InformationType<unknown> | undefined);
+    value(o: OwnerType<string>): this;
 }
 
 /**
@@ -28,8 +28,8 @@ declare class FetchedData extends TheInformation<string> {
 declare class RequestJson extends TheInformation<Partial<FetchRequestType>> {
     private requestSrc;
     private errorOwner?;
-    constructor(requestSrc: TheInformation<Partial<FetchRequestType>>, errorOwner?: TheOwner<unknown> | undefined);
-    value(o: TheOwner<Partial<FetchRequestType>>): this;
+    constructor(requestSrc: InformationType<Partial<FetchRequestType>>, errorOwner?: OwnerType<unknown> | undefined);
+    value(o: OwnerType<Partial<FetchRequestType>>): this;
 }
 
 /**
@@ -37,8 +37,8 @@ declare class RequestJson extends TheInformation<Partial<FetchRequestType>> {
  */
 declare class Elements extends TheInformation<HTMLElement[]> {
     private selectorSrc;
-    constructor(selectorSrc: TheInformation<string>);
-    value(o: TheOwner<HTMLElement[]>): this;
+    constructor(selectorSrc: InformationType<string>);
+    value(o: OwnerType<HTMLElement[]>): this;
 }
 
 /**
@@ -48,8 +48,8 @@ declare class Elements extends TheInformation<HTMLElement[]> {
 declare class Log<T> extends TheInformation<T> {
     private sourceSrc;
     private titleSrc;
-    constructor(sourceSrc: TheInformation<T>, titleSrc: TheInformation<string>);
-    value(o: TheOwner<T>): this;
+    constructor(sourceSrc: InformationType<T>, titleSrc: InformationType<string>);
+    value(o: OwnerType<T>): this;
 }
 
 export { Elements, FetchedData, Log, RequestJson };
