@@ -1,4 +1,4 @@
-import { InformationType, OwnerType } from 'silentium';
+import { TheInformation, TheOwner } from 'silentium';
 
 interface FetchRequestType {
     baseUrl?: string;
@@ -14,23 +14,43 @@ interface FetchRequestType {
  * https://kosukhin.github.io/patron-web-api/#/fetch/fetched
  * https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
  */
-declare const fetchedData: (requestSrc: InformationType<Partial<FetchRequestType>>, errorOwner?: OwnerType<unknown>, abortSrc?: InformationType<unknown>) => InformationType<string>;
+declare class FetchedData extends TheInformation<string> {
+    private requestSrc;
+    private errorOwner?;
+    private abortSrc?;
+    constructor(requestSrc: TheInformation<Partial<FetchRequestType>>, errorOwner?: TheOwner<unknown> | undefined, abortSrc?: TheInformation<unknown> | undefined);
+    value(o: TheOwner<string>): this;
+}
 
 /**
  * Represents a request for JSON data.
  */
-declare const requestJson: (requestSrc: InformationType<Partial<FetchRequestType>>, errorOwner?: OwnerType<unknown>) => InformationType<Partial<FetchRequestType>>;
+declare class RequestJson extends TheInformation<Partial<FetchRequestType>> {
+    private requestSrc;
+    private errorOwner?;
+    constructor(requestSrc: TheInformation<Partial<FetchRequestType>>, errorOwner?: TheOwner<unknown> | undefined);
+    value(o: TheOwner<Partial<FetchRequestType>>): this;
+}
 
 /**
  * Represents a collection of elements that match a given CSS selector.
  */
-declare const elements: (selectorSrc: InformationType<string>) => InformationType<HTMLElement[]>;
+declare class Elements extends TheInformation<HTMLElement[]> {
+    private selectorSrc;
+    constructor(selectorSrc: TheInformation<string>);
+    value(o: TheOwner<HTMLElement[]>): this;
+}
 
 /**
  * Helps to print logs to somewhere
  * https://developer.mozilla.org/en-US/docs/Web/API/Console_API
  */
-declare const log: <T>(sourceSrc: InformationType<T>, titleSrc: InformationType<string>) => InformationType<T>;
+declare class Log<T> extends TheInformation<T> {
+    private sourceSrc;
+    private titleSrc;
+    constructor(sourceSrc: TheInformation<T>, titleSrc: TheInformation<string>);
+    value(o: TheOwner<T>): this;
+}
 
-export { elements, fetchedData, log, requestJson };
+export { Elements, FetchedData, Log, RequestJson };
 export type { FetchRequestType };
