@@ -1,6 +1,6 @@
 import { afterEach, expect, test, vi } from "vitest";
-import { log } from "../console/Log";
-import { i } from "silentium";
+import { Log } from "../console/Log";
+import { From, Of } from "silentium";
 
 afterEach(() => {
   vi.clearAllMocks();
@@ -11,8 +11,8 @@ test("Log.test", () => {
   vi.spyOn(console, "log").mockImplementation(consoleLog);
 
   const g = vi.fn();
-  const afterLog = log(i("src"), i("title"));
-  afterLog(g);
+  const afterLog = new Log(new Of("src"), new Of("title"));
+  afterLog.value(new From(g));
 
   expect(g).toHaveBeenLastCalledWith("src");
   expect(consoleLog).toHaveBeenLastCalledWith("LOG:", "title", "src");

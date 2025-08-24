@@ -1,14 +1,16 @@
-import { InformationType } from "silentium";
+import { TheInformation, TheOwner } from "silentium";
 
 /**
  * Presents animation frame and provides it as a callback
  * function that will be executed whenever the browser
  * is ready to render a new frame.
  */
-export const animationFrame = (): InformationType<number> => {
-  return (o) => {
+export class AnimationFrame extends TheInformation<number> {
+  public value(o: TheOwner<number>): this {
     requestAnimationFrame(() => {
-      o(1);
+      o.give(1);
     });
-  };
-};
+
+    return this;
+  }
+}

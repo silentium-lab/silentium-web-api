@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
-import { fetchedData } from "./FetchedData";
-import { i } from "silentium";
+import { FetchedData } from "./FetchedData";
+import { From, Of } from "silentium";
 
 beforeEach(() => {
   vi.useFakeTimers();
@@ -18,8 +18,8 @@ test("Fetched.test", async () => {
 
   const g = vi.fn();
   const error = vi.fn();
-  const f = fetchedData(
-    i({
+  const f = new FetchedData(
+    new Of({
       url: "https://example.com",
       method: "GET",
       headers: {
@@ -27,9 +27,9 @@ test("Fetched.test", async () => {
       },
       body: JSON.stringify({ key: "value" }),
     }),
-    error,
+    new From(error),
   );
-  f(g);
+  f.value(new From(g));
 
   await vi.advanceTimersByTimeAsync(10);
 

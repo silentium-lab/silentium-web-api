@@ -1,6 +1,6 @@
 import { expect, test, vi } from "vitest";
-import { elements } from "./Elements";
-import { i } from "silentium";
+import { Elements } from "./Elements";
+import { From, Of } from "silentium";
 
 test("Elements.test", () => {
   const mockQuerselector = vi.fn().mockReturnValue([{ id: "mock" }]);
@@ -8,9 +8,9 @@ test("Elements.test", () => {
     querySelectorAll: mockQuerselector,
   } as unknown as Document;
 
-  const el = elements(i(".test"));
+  const el = new Elements(new Of(".test"));
   const g = vi.fn();
-  el(g);
+  el.value(new From(g));
 
   expect(g).toHaveBeenLastCalledWith([{ id: "mock" }]);
 });

@@ -1,13 +1,14 @@
 import { expect, test, vi } from "vitest";
-import { animationFrame } from "./AnimationFrame";
+import { AnimationFrame } from "./AnimationFrame";
+import { From } from "silentium";
 
 test("AnimationFrame.test", () => {
   global.requestAnimationFrame = (cb: FrameRequestCallback) => {
     return cb(1) as unknown as number;
   };
-  const af = animationFrame();
+  const af = new AnimationFrame();
   const g = vi.fn();
-  af(g);
+  af.value(new From(g));
 
   expect(g).toHaveBeenCalledTimes(1);
 });
