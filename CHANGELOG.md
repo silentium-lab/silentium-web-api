@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.16](https://github.com/silentium-lab/silentium-web-api/compare/v0.0.15...v0.0.16) (2025-08-30)
+
+
+### Bug Fixes
+
+* **main:** versions up ([f5fcba0](https://github.com/silentium-lab/silentium-web-api/commit/f5fcba001ed6e8c77949d9063dfdf6fab9aa0966))
+
 ### [0.0.15](https://github.com/silentium-lab/silentium-web-api/compare/v0.0.14...v0.0.15) (2025-08-24)
 
 
