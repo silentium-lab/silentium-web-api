@@ -125,5 +125,18 @@ class Log extends TheInformation {
   }
 }
 
-export { Elements, FetchedData, Log, RequestJson };
+class Timer extends TheInformation {
+  constructor(delay) {
+    super();
+    this.delay = delay;
+  }
+  value(o) {
+    setTimeout(() => {
+      o.give(this.delay);
+    }, this.delay);
+    return this;
+  }
+}
+
+export { Elements, FetchedData, Log, RequestJson, Timer };
 //# sourceMappingURL=silentium-web-api.mjs.map

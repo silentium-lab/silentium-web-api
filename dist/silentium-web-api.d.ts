@@ -52,5 +52,11 @@ declare class Log<T> extends TheInformation<T> {
     value(o: OwnerType<T>): this;
 }
 
-export { Elements, FetchedData, Log, RequestJson };
+declare class Timer extends TheInformation<number> {
+    private delay;
+    constructor(delay: number);
+    value(o: OwnerType<number>): this;
+}
+
+export { Elements, FetchedData, Log, RequestJson, Timer };
 export type { FetchRequestType };

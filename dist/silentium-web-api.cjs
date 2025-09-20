@@ -127,8 +127,22 @@ class Log extends silentium.TheInformation {
   }
 }
 
+class Timer extends silentium.TheInformation {
+  constructor(delay) {
+    super();
+    this.delay = delay;
+  }
+  value(o) {
+    setTimeout(() => {
+      o.give(this.delay);
+    }, this.delay);
+    return this;
+  }
+}
+
 exports.Elements = Elements;
 exports.FetchedData = FetchedData;
 exports.Log = Log;
 exports.RequestJson = RequestJson;
+exports.Timer = Timer;
 //# sourceMappingURL=silentium-web-api.cjs.map
