@@ -1,4 +1,4 @@
-import { TheInformation, InformationType, OwnerType } from 'silentium';
+import { DataType, DataUserType } from 'silentium';
 
 interface FetchRequestType {
     baseUrl?: string;
@@ -14,49 +14,25 @@ interface FetchRequestType {
  * https://kosukhin.github.io/patron-web-api/#/fetch/fetched
  * https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
  */
-declare class FetchedData extends TheInformation<string> {
-    private requestSrc;
-    private errorOwner?;
-    private abortSrc?;
-    constructor(requestSrc: InformationType<Partial<FetchRequestType>>, errorOwner?: OwnerType<unknown> | undefined, abortSrc?: InformationType<unknown> | undefined);
-    value(o: OwnerType<string>): this;
-}
+declare const fetchedData: (requestSrc: DataType<Partial<FetchRequestType>>, errorOwner?: DataUserType, abortSrc?: DataType) => DataType<string>;
 
 /**
  * Represents a request for JSON data.
  */
-declare class RequestJson extends TheInformation<Partial<FetchRequestType>> {
-    private requestSrc;
-    private errorOwner?;
-    constructor(requestSrc: InformationType<Partial<FetchRequestType>>, errorOwner?: OwnerType<unknown> | undefined);
-    value(o: OwnerType<Partial<FetchRequestType>>): this;
-}
+declare const requestJson: (requestSrc: DataType<Partial<FetchRequestType>>, errorOwner?: DataUserType<unknown>) => DataType<Partial<FetchRequestType>>;
 
 /**
  * Represents a collection of elements that match a given CSS selector.
  */
-declare class Elements extends TheInformation<HTMLElement[]> {
-    private selectorSrc;
-    constructor(selectorSrc: InformationType<string>);
-    value(o: OwnerType<HTMLElement[]>): this;
-}
+declare const elements: (selectorSrc: DataType<string>) => DataType<HTMLElement[]>;
 
 /**
  * Helps to print logs to somewhere
  * https://developer.mozilla.org/en-US/docs/Web/API/Console_API
  */
-declare class Log<T> extends TheInformation<T> {
-    private sourceSrc;
-    private titleSrc;
-    constructor(sourceSrc: InformationType<T>, titleSrc: InformationType<string>);
-    value(o: OwnerType<T>): this;
-}
+declare const log: <T>(sourceSrc: DataType<T>, titleSrc: DataType<string>) => DataType<T>;
 
-declare class Timer extends TheInformation<number> {
-    private delay;
-    constructor(delay: number);
-    value(o: OwnerType<number>): this;
-}
+declare const timer: (delay: number) => DataType<number>;
 
-export { Elements, FetchedData, Log, RequestJson, Timer };
+export { elements, fetchedData, log, requestJson, timer };
 export type { FetchRequestType };
