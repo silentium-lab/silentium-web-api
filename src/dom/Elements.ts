@@ -1,41 +1,35 @@
-import { From, InformationType, OwnerType, TheInformation } from "silentium";
+import { DataType } from "silentium";
 
 /**
  * Represents a collection of elements that match a given CSS selector.
  */
-export class Elements extends TheInformation<HTMLElement[]> {
-  public constructor(private selectorSrc: InformationType<string>) {
-    super(selectorSrc);
-  }
+export const elements = (
+  selectorSrc: DataType<string>,
+): DataType<HTMLElement[]> => {
+  return (u) => {
+    selectorSrc((selectorContent) => {
+      const element = document.querySelectorAll(selectorContent);
+      if (element.length) {
+        u(Array.from(element) as HTMLElement[]);
+      } else {
+        const targetNode = document.body;
+        const config = { childList: true, subtree: true };
 
-  public value(o: OwnerType<HTMLElement[]>): this {
-    this.selectorSrc.value(
-      new From((selectorContent) => {
-        const element = document.querySelectorAll(selectorContent);
-        if (element.length) {
-          o.give(Array.from(element) as HTMLElement[]);
-        } else {
-          const targetNode = document.body;
-          const config = { childList: true, subtree: true };
-
-          const observer = new MutationObserver((mutationsList) => {
-            for (const mutation of mutationsList) {
-              if (mutation.type === "childList") {
-                const element = document.querySelectorAll(selectorContent);
-                if (element) {
-                  o.give(Array.from(element) as HTMLElement[]);
-                  observer.disconnect();
-                  break;
-                }
+        const observer = new MutationObserver((mutationsList) => {
+          for (const mutation of mutationsList) {
+            if (mutation.type === "childList") {
+              const element = document.querySelectorAll(selectorContent);
+              if (element) {
+                u(Array.from(element) as HTMLElement[]);
+                observer.disconnect();
+                break;
               }
             }
-          });
+          }
+        });
 
-          observer.observe(targetNode, config);
-        }
-      }),
-    );
-
-    return this;
-  }
-}
+        observer.observe(targetNode, config);
+      }
+    });
+  };
+};

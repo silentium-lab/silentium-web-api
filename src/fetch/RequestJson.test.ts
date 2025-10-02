@@ -1,17 +1,17 @@
+import { of } from "silentium";
+import { requestJson } from "../fetch/RequestJson";
 import { expect, test, vi } from "vitest";
-import { RequestJson } from "./RequestJson";
-import { From, Of } from "silentium";
 
 test("requestJson", () => {
-  const r = new RequestJson(
-    new Of({
+  const r = requestJson(
+    of({
       body: {
         hello: "world",
       },
     }),
   );
   const g = vi.fn();
-  r.value(new From(g));
+  r(g);
 
   expect(g).toHaveBeenCalledWith({
     body: '{"hello":"world"}',

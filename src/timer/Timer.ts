@@ -1,14 +1,9 @@
-import { OwnerType, TheInformation } from "silentium";
+import { DataType } from "silentium";
 
-export class Timer extends TheInformation<number> {
-  public constructor(private delay: number) {
-    super();
-  }
-
-  public value(o: OwnerType<number>): this {
+export const timer = (delay: number): DataType<number> => {
+  return (u) => {
     setTimeout(() => {
-      o.give(this.delay);
-    }, this.delay);
-    return this;
-  }
-}
+      u(delay);
+    }, delay);
+  };
+};
