@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.20](https://github.com/silentium-lab/silentium-web-api/compare/v0.0.19...v0.0.20) (2025-10-02)
+
+
+### Bug Fixes
+
+* **main:** move to fns ([3ffa91d](https://github.com/silentium-lab/silentium-web-api/commit/3ffa91d86bf0dbbd73ce134537e4924c5d7f123e))
+
 ### [0.0.19](https://github.com/silentium-lab/silentium-web-api/compare/v0.0.18...v0.0.19) (2025-09-20)
 
 
