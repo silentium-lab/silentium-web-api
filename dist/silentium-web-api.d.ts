@@ -24,7 +24,7 @@ declare const requestJson: (requestSrc: DataType<Partial<FetchRequestType>>, err
 /**
  * Represents a collection of elements that match a given CSS selector.
  */
-declare const elements: (selectorSrc: DataType<string>) => DataType<HTMLElement[]>;
+declare const elements: <T extends HTMLElement>(selectorSrc: DataType<string>) => DataType<T[]>;
 
 /**
  * Helps to print logs to somewhere
