@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.21](https://github.com/silentium-lab/silentium-web-api/compare/v0.0.20...v0.0.21) (2025-10-04)
+
+
+### Bug Fixes
+
+* **main:** element component generic type ([588509e](https://github.com/silentium-lab/silentium-web-api/commit/588509e0c80a8ae5fd3d82320848ff23f4e704a1))
+
 ### [0.0.20](https://github.com/silentium-lab/silentium-web-api/compare/v0.0.19...v0.0.20) (2025-10-02)
 
 
