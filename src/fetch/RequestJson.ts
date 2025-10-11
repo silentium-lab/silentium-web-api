@@ -1,13 +1,13 @@
-import { DataType, DataUserType } from "silentium";
+import { EventType, EventUserType } from "silentium";
 import { FetchRequestType } from "./FetchedData";
 
 /**
  * Represents a request for JSON data.
  */
 export const requestJson = (
-  requestSrc: DataType<Partial<FetchRequestType>>,
-  errorOwner?: DataUserType<unknown>,
-): DataType<Partial<FetchRequestType>> => {
+  requestSrc: EventType<Partial<FetchRequestType>>,
+  errorOwner?: EventUserType<unknown>,
+): EventType<Partial<FetchRequestType>> => {
   return (u) => {
     requestSrc((r) => {
       try {

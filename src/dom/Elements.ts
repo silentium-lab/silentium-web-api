@@ -1,11 +1,11 @@
-import { DataType } from "silentium";
+import { EventType } from "silentium";
 
 /**
  * Represents a collection of elements that match a given CSS selector.
  */
 export const elements = <T extends HTMLElement>(
-  selectorSrc: DataType<string>,
-): DataType<T[]> => {
+  selectorSrc: EventType<string>,
+): EventType<T[]> => {
   return (u) => {
     selectorSrc((selectorContent) => {
       const element = document.querySelectorAll(selectorContent);

@@ -1,4 +1,4 @@
-import { DataType, DataUserType } from "silentium";
+import { EventType, EventUserType } from "silentium";
 
 export interface FetchRequestType {
   baseUrl?: string;
@@ -16,10 +16,10 @@ export interface FetchRequestType {
  * https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
  */
 export const fetchedData = (
-  requestSrc: DataType<Partial<FetchRequestType>>,
-  errorOwner?: DataUserType,
-  abortSrc?: DataType,
-): DataType<string> => {
+  requestSrc: EventType<Partial<FetchRequestType>>,
+  errorOwner?: EventUserType,
+  abortSrc?: EventType,
+): EventType<string> => {
   return (u) => {
     const abortController = new AbortController();
     if (abortSrc) {
