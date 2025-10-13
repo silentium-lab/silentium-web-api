@@ -1,11 +1,11 @@
-import { animationFrame } from "../animation/AnimationFrame";
+import { AnimationFrame } from "../animation/AnimationFrame";
 import { expect, test, vi } from "vitest";
 
 test("AnimationFrame.test", () => {
   global.requestAnimationFrame = (cb: FrameRequestCallback) => {
     return cb(1) as unknown as number;
   };
-  const af = animationFrame();
+  const af = AnimationFrame();
   const g = vi.fn();
   af(g);
 

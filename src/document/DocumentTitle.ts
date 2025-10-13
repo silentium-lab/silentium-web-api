@@ -1,1 +1,1 @@
-export const documentTitle = () => {};
+export function DocumentTitle() {}

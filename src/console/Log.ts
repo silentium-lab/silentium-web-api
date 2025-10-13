@@ -1,15 +1,15 @@
-import { all, EventType } from "silentium";
+import { All, EventType } from "silentium";
 
 /**
  * Helps to print logs to somewhere
  * https://developer.mozilla.org/en-US/docs/Web/API/Console_API
  */
-export const log = <T>(
+export function Log<T>(
   sourceSrc: EventType<T>,
   titleSrc: EventType<string>,
-): EventType<T> => {
+): EventType<T> {
   return (u) => {
-    all(
+    All(
       sourceSrc,
       titleSrc,
     )(([source, title]) => {
@@ -17,4 +17,4 @@ export const log = <T>(
       u(source);
     });
   };
-};
+}

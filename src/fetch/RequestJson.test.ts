@@ -1,10 +1,10 @@
-import { of } from "silentium";
-import { requestJson } from "../fetch/RequestJson";
+import { Of } from "silentium";
+import { RequestJson } from "../fetch/RequestJson";
 import { expect, test, vi } from "vitest";
 
 test("requestJson", () => {
-  const r = requestJson(
-    of({
+  const r = RequestJson(
+    Of({
       body: {
         hello: "world",
       },

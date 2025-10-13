@@ -1,1 +1,1 @@
-export const cursor = () => {};
+export function Cursor() {}

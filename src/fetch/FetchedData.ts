@@ -15,11 +15,11 @@ export interface FetchRequestType {
  * https://kosukhin.github.io/patron-web-api/#/fetch/fetched
  * https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
  */
-export const fetchedData = (
+export function FetchedData(
   requestSrc: EventType<Partial<FetchRequestType>>,
   errorOwner?: EventUserType,
   abortSrc?: EventType,
-): EventType<string> => {
+): EventType<string> {
   return (u) => {
     const abortController = new AbortController();
     if (abortSrc) {
@@ -57,4 +57,4 @@ export const fetchedData = (
         });
     });
   };
-};
+}

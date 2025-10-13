@@ -1,5 +1,5 @@
-import { of } from "silentium";
-import { fetchedData } from "../fetch/FetchedData";
+import { Of } from "silentium";
+import { FetchedData } from "../fetch/FetchedData";
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
 
 beforeEach(() => {
@@ -18,8 +18,8 @@ test("Fetched.test", async () => {
 
   const g = vi.fn();
   const error = vi.fn();
-  const f = fetchedData(
-    of({
+  const f = FetchedData(
+    Of({
       url: "https://example.com",
       method: "GET",
       headers: {

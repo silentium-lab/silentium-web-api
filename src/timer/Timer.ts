@@ -1,9 +1,9 @@
-import { DataType } from "silentium";
+import { EventType } from "silentium";
 
-export const timer = (delay: number): DataType<number> => {
-  return (u) => {
+export function Timer(delay: number): EventType<number> {
+  return (user) => {
     setTimeout(() => {
-      u(delay);
+      user(delay);
     }, delay);
   };
-};
+}

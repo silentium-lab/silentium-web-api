@@ -3,9 +3,9 @@ import { EventType } from "silentium";
 /**
  * Represents a collection of elements that match a given CSS selector.
  */
-export const elements = <T extends HTMLElement>(
+export function Elements<T extends HTMLElement>(
   selectorSrc: EventType<string>,
-): EventType<T[]> => {
+): EventType<T[]> {
   return (u) => {
     selectorSrc((selectorContent) => {
       const element = document.querySelectorAll(selectorContent);
@@ -32,4 +32,4 @@ export const elements = <T extends HTMLElement>(
       }
     });
   };
-};
+}

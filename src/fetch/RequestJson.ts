@@ -4,10 +4,10 @@ import { FetchRequestType } from "./FetchedData";
 /**
  * Represents a request for JSON data.
  */
-export const requestJson = (
+export function RequestJson(
   requestSrc: EventType<Partial<FetchRequestType>>,
   errorOwner?: EventUserType<unknown>,
-): EventType<Partial<FetchRequestType>> => {
+): EventType<Partial<FetchRequestType>> {
   return (u) => {
     requestSrc((r) => {
       try {
@@ -24,4 +24,4 @@ export const requestJson = (
       }
     });
   };
-};
+}

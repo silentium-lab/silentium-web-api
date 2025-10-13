@@ -5,10 +5,10 @@ import { EventType } from "silentium";
  * function that will be executed whenever the browser
  * is ready to render a new frame.
  */
-export const animationFrame = (): EventType<number> => {
+export function AnimationFrame(): EventType<number> {
   return (u) => {
     requestAnimationFrame(() => {
       u(1);
     });
   };
-};
+}

@@ -1,14 +1,14 @@
-import { of } from "silentium";
-import { elements } from "../dom/Elements";
+import { Of } from "silentium";
+import { Elements } from "../dom/Elements";
 import { expect, test, vi } from "vitest";
 
 test("Elements.test", () => {
-  const mockQuerselector = vi.fn().mockReturnValue([{ id: "mock" }]);
+  const mockQuerySelector = vi.fn().mockReturnValue([{ id: "mock" }]);
   global.document = {
-    querySelectorAll: mockQuerselector,
+    querySelectorAll: mockQuerySelector,
   } as unknown as Document;
 
-  const el = elements(of(".test"));
+  const el = Elements(Of(".test"));
   const g = vi.fn();
   el(g);
 
