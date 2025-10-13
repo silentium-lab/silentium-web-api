@@ -1,6 +1,6 @@
-import { all } from 'silentium';
+import { All } from 'silentium';
 
-const fetchedData = (requestSrc, errorOwner, abortSrc) => {
+function FetchedData(requestSrc, errorOwner, abortSrc) {
   return (u) => {
     const abortController = new AbortController();
     if (abortSrc) {
@@ -34,9 +34,9 @@ const fetchedData = (requestSrc, errorOwner, abortSrc) => {
       });
     });
   };
-};
+}
 
-const requestJson = (requestSrc, errorOwner) => {
+function RequestJson(requestSrc, errorOwner) {
   return (u) => {
     requestSrc((r) => {
       try {
@@ -53,9 +53,9 @@ const requestJson = (requestSrc, errorOwner) => {
       }
     });
   };
-};
+}
 
-const elements = (selectorSrc) => {
+function Elements(selectorSrc) {
   return (u) => {
     selectorSrc((selectorContent) => {
       const element = document.querySelectorAll(selectorContent);
@@ -80,11 +80,11 @@ const elements = (selectorSrc) => {
       }
     });
   };
-};
+}
 
-const log = (sourceSrc, titleSrc) => {
+function Log(sourceSrc, titleSrc) {
   return (u) => {
-    all(
+    All(
       sourceSrc,
       titleSrc
     )(([source, title]) => {
@@ -92,15 +92,15 @@ const log = (sourceSrc, titleSrc) => {
       u(source);
     });
   };
-};
+}
 
-const timer = (delay) => {
-  return (u) => {
+function Timer(delay) {
+  return (user) => {
     setTimeout(() => {
-      u(delay);
+      user(delay);
     }, delay);
   };
-};
+}
 
-export { elements, fetchedData, log, requestJson, timer };
+export { Elements, FetchedData, Log, RequestJson, Timer };
 //# sourceMappingURL=silentium-web-api.js.map
