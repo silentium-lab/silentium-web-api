@@ -1,9 +1,9 @@
-import { EventType } from "silentium";
+import { Event, EventType } from "silentium";
 
 export function Timer(delay: number): EventType<number> {
-  return (user) => {
+  return Event((t) => {
     setTimeout(() => {
-      user(delay);
+      t.use(delay);
     }, delay);
-  };
+  });
 }

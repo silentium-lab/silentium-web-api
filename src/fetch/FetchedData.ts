@@ -1,4 +1,4 @@
-import { EventType, EventUserType } from "silentium";
+import { Event, EventType, Transport, TransportType } from "silentium";
 
 export interface FetchRequestType {
   baseUrl?: string;
@@ -16,45 +16,49 @@ export interface FetchRequestType {
  * https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
  */
 export function FetchedData(
-  requestSrc: EventType<Partial<FetchRequestType>>,
-  errorOwner?: EventUserType,
-  abortSrc?: EventType,
+  $request: EventType<Partial<FetchRequestType>>,
+  error?: TransportType,
+  $abort?: EventType,
 ): EventType<string> {
-  return (u) => {
+  return Event((u) => {
     const abortController = new AbortController();
-    if (abortSrc) {
-      abortSrc((abort) => {
-        if (abort) {
-          abortController.abort();
-        }
-      });
-    }
-    requestSrc((request) => {
-      const { baseUrl, url, method, credentials, headers, body, query } =
-        request;
-      let urlWithQuery: URL;
-      try {
-        urlWithQuery = new URL(String(url), baseUrl);
-      } catch {
-        errorOwner?.(new Error("Invalid URL"));
-        return;
-      }
-      Object.entries(query ?? {}).forEach(([key, value]) =>
-        urlWithQuery.searchParams.append(key, String(value)),
+    if ($abort) {
+      $abort.event(
+        Transport((abort) => {
+          if (abort) {
+            abortController.abort();
+          }
+        }),
       );
-      const options: RequestInit = {
-        method,
-        credentials,
-        headers,
-        body: body as BodyInit,
-        signal: abortController.signal,
-      };
-      fetch(urlWithQuery.toString(), options)
-        .then((response) => response.text())
-        .then((data) => u(data))
-        .catch((error) => {
-          errorOwner?.(error);
-        });
-    });
-  };
+    }
+    $request.event(
+      Transport((request) => {
+        const { baseUrl, url, method, credentials, headers, body, query } =
+          request;
+        let urlWithQuery: URL;
+        try {
+          urlWithQuery = new URL(String(url), baseUrl);
+        } catch {
+          error?.use(new Error("Invalid URL"));
+          return;
+        }
+        Object.entries(query ?? {}).forEach(([key, value]) =>
+          urlWithQuery.searchParams.append(key, String(value)),
+        );
+        const options: RequestInit = {
+          method,
+          credentials,
+          headers,
+          body: body as BodyInit,
+          signal: abortController.signal,
+        };
+        fetch(urlWithQuery.toString(), options)
+          .then((response) => response.text())
+          .then((data) => u.use(data))
+          .catch((error) => {
+            error?.(error);
+          });
+      }),
+    );
+  });
 }

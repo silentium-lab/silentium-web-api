@@ -1,4 +1,4 @@
-import { EventType } from "silentium";
+import { Event, EventType } from "silentium";
 
 /**
  * Presents animation frame and provides it as a callback
@@ -6,9 +6,9 @@ import { EventType } from "silentium";
  * is ready to render a new frame.
  */
 export function AnimationFrame(): EventType<number> {
-  return (u) => {
+  return Event((t) => {
     requestAnimationFrame(() => {
-      u(1);
+      t.use(1);
     });
-  };
+  });
 }

@@ -1,4 +1,4 @@
-import { Of } from "silentium";
+import { Of, Transport } from "silentium";
 import { Log } from "../console/Log";
 import { afterEach, expect, test, vi } from "vitest";
 
@@ -11,8 +11,8 @@ test("Log.test", () => {
   vi.spyOn(console, "log").mockImplementation(consoleLog);
 
   const g = vi.fn();
-  const afterLog = Log(Of("src"), Of("title"));
-  afterLog(g);
+  const $logged = Log(Of("src"), Of("title"));
+  $logged.event(Transport(g));
 
   expect(g).toHaveBeenLastCalledWith("src");
   expect(consoleLog).toHaveBeenLastCalledWith("LOG:", "title", "src");

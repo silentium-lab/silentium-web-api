@@ -1,3 +1,4 @@
+import { Transport } from "silentium";
 import { AnimationFrame } from "../animation/AnimationFrame";
 import { expect, test, vi } from "vitest";
 
@@ -7,7 +8,7 @@ test("AnimationFrame.test", () => {
   };
   const af = AnimationFrame();
   const g = vi.fn();
-  af(g);
+  af.event(Transport(g));
 
   expect(g).toHaveBeenCalledTimes(1);
 });

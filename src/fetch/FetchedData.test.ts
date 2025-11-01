@@ -1,4 +1,4 @@
-import { Of } from "silentium";
+import { Of, Transport } from "silentium";
 import { FetchedData } from "../fetch/FetchedData";
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
 
@@ -27,9 +27,9 @@ test("Fetched.test", async () => {
       },
       body: JSON.stringify({ key: "value" }),
     }),
-    error,
+    Transport(error),
   );
-  f(g);
+  f.event(Transport(g));
 
   await vi.advanceTimersByTimeAsync(10);
 

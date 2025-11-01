@@ -1,4 +1,4 @@
-import { Of } from "silentium";
+import { Of, Transport } from "silentium";
 import { Elements } from "../dom/Elements";
 import { expect, test, vi } from "vitest";
 
@@ -10,7 +10,7 @@ test("Elements.test", () => {
 
   const el = Elements(Of(".test"));
   const g = vi.fn();
-  el(g);
+  el.event(Transport(g));
 
   expect(g).toHaveBeenLastCalledWith([{ id: "mock" }]);
 });
