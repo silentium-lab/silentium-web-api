@@ -1,105 +1,112 @@
-import { All } from 'silentium';
+import { Event, Transport, All } from 'silentium';
 
-function FetchedData(requestSrc, errorOwner, abortSrc) {
-  return (u) => {
+function FetchedData($request, error, $abort) {
+  return Event((u) => {
     const abortController = new AbortController();
-    if (abortSrc) {
-      abortSrc((abort) => {
-        if (abort) {
-          abortController.abort();
-        }
-      });
-    }
-    requestSrc((request) => {
-      const { baseUrl, url, method, credentials, headers, body, query } = request;
-      let urlWithQuery;
-      try {
-        urlWithQuery = new URL(String(url), baseUrl);
-      } catch {
-        errorOwner?.(new Error("Invalid URL"));
-        return;
-      }
-      Object.entries(query ?? {}).forEach(
-        ([key, value]) => urlWithQuery.searchParams.append(key, String(value))
+    if ($abort) {
+      $abort.event(
+        Transport((abort) => {
+          if (abort) {
+            abortController.abort();
+          }
+        })
       );
-      const options = {
-        method,
-        credentials,
-        headers,
-        body,
-        signal: abortController.signal
-      };
-      fetch(urlWithQuery.toString(), options).then((response) => response.text()).then((data) => u(data)).catch((error) => {
-        errorOwner?.(error);
-      });
-    });
-  };
-}
-
-function RequestJson(requestSrc, errorOwner) {
-  return (u) => {
-    requestSrc((r) => {
-      try {
-        u({
-          ...r,
-          headers: {
-            ...r.headers ?? {},
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify(r.body)
+    }
+    $request.event(
+      Transport((request) => {
+        const { baseUrl, url, method, credentials, headers, body, query } = request;
+        let urlWithQuery;
+        try {
+          urlWithQuery = new URL(String(url), baseUrl);
+        } catch {
+          error?.use(new Error("Invalid URL"));
+          return;
+        }
+        Object.entries(query ?? {}).forEach(
+          ([key, value]) => urlWithQuery.searchParams.append(key, String(value))
+        );
+        const options = {
+          method,
+          credentials,
+          headers,
+          body,
+          signal: abortController.signal
+        };
+        fetch(urlWithQuery.toString(), options).then((response) => response.text()).then((data) => u.use(data)).catch((error2) => {
+          error2?.(error2);
         });
-      } catch {
-        errorOwner?.(new Error("Failed to parse JSON"));
-      }
-    });
-  };
+      })
+    );
+  });
 }
 
-function Elements(selectorSrc) {
-  return (u) => {
-    selectorSrc((selectorContent) => {
-      const element = document.querySelectorAll(selectorContent);
-      if (element.length) {
-        u(Array.from(element));
-      } else {
-        const targetNode = document.body;
-        const config = { childList: true, subtree: true };
-        const observer = new MutationObserver((mutationsList) => {
-          for (const mutation of mutationsList) {
-            if (mutation.type === "childList") {
-              const element2 = document.querySelectorAll(selectorContent);
-              if (element2) {
-                u(Array.from(element2));
-                observer.disconnect();
-                break;
+function RequestJson($request, error) {
+  return Event((t) => {
+    $request.event(
+      Transport((r) => {
+        try {
+          t.use({
+            ...r,
+            headers: {
+              ...r.headers ?? {},
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(r.body)
+          });
+        } catch {
+          error?.use(new Error("Failed to parse JSON"));
+        }
+      })
+    );
+  });
+}
+
+function Elements($selector) {
+  return Event((t) => {
+    $selector.event(
+      Transport((selector) => {
+        const element = document.querySelectorAll(selector);
+        if (element.length) {
+          t.use(Array.from(element));
+        } else {
+          const targetNode = document.body;
+          const config = { childList: true, subtree: true };
+          const observer = new MutationObserver((mutationsList) => {
+            for (const mutation of mutationsList) {
+              if (mutation.type === "childList") {
+                const element2 = document.querySelectorAll(selector);
+                if (element2) {
+                  t.use(Array.from(element2));
+                  observer.disconnect();
+                  break;
+                }
               }
             }
-          }
-        });
-        observer.observe(targetNode, config);
-      }
-    });
-  };
+          });
+          observer.observe(targetNode, config);
+        }
+      })
+    );
+  });
 }
 
 function Log(sourceSrc, titleSrc) {
-  return (u) => {
-    All(
-      sourceSrc,
-      titleSrc
-    )(([source, title]) => {
-      console.log("LOG:", title, source);
-      u(source);
-    });
-  };
+  return Event((t) => {
+    All(sourceSrc, titleSrc).event(
+      Transport(([source, title]) => {
+        console.log("LOG:", title, source);
+        t.use(source);
+      })
+    );
+  });
 }
 
 function Timer(delay) {
-  return (user) => {
+  return Event((t) => {
     setTimeout(() => {
-      user(delay);
+      t.use(delay);
     }, delay);
-  };
+  });
 }
 
 export { Elements, FetchedData, Log, RequestJson, Timer };

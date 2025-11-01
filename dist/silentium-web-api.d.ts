@@ -1,4 +1,4 @@
-import { EventType, EventUserType } from 'silentium';
+import { EventType, TransportType } from 'silentium';
 
 interface FetchRequestType {
     baseUrl?: string;
@@ -14,17 +14,17 @@ interface FetchRequestType {
  * https://kosukhin.github.io/patron-web-api/#/fetch/fetched
  * https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
  */
-declare function FetchedData(requestSrc: EventType<Partial<FetchRequestType>>, errorOwner?: EventUserType, abortSrc?: EventType): EventType<string>;
+declare function FetchedData($request: EventType<Partial<FetchRequestType>>, error?: TransportType, $abort?: EventType): EventType<string>;
 
 /**
  * Represents a request for JSON data.
  */
-declare function RequestJson(requestSrc: EventType<Partial<FetchRequestType>>, errorOwner?: EventUserType<unknown>): EventType<Partial<FetchRequestType>>;
+declare function RequestJson($request: EventType<Partial<FetchRequestType>>, error?: TransportType): EventType<Partial<FetchRequestType>>;
 
 /**
  * Represents a collection of elements that match a given CSS selector.
  */
-declare function Elements<T extends HTMLElement>(selectorSrc: EventType<string>): EventType<T[]>;
+declare function Elements<T extends HTMLElement>($selector: EventType<string>): EventType<T[]>;
 
 /**
  * Helps to print logs to somewhere
