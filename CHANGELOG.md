@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.25](https://github.com/silentium-lab/silentium-web-api/compare/v0.0.24...v0.0.25) (2025-11-01)
+
+
+### Bug Fixes
+
+* npm audit fixes ([743ea31](https://github.com/silentium-lab/silentium-web-api/commit/743ea319afb6c341bca960d19e2847b6e5695d18))
+
 ### [0.0.24](https://github.com/silentium-lab/silentium-web-api/compare/v0.0.23...v0.0.24) (2025-11-01)
 
 
