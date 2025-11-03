@@ -92,14 +92,9 @@ function Elements($selector) {
   });
 }
 
-function Log(sourceSrc, titleSrc) {
-  return silentium.Event((t) => {
-    silentium.All(sourceSrc, titleSrc).event(
-      silentium.Transport(([source, title]) => {
-        console.log("LOG:", title, source);
-        t.use(source);
-      })
-    );
+function Log(group) {
+  return silentium.Transport((v) => {
+    console.log(group, v);
   });
 }
 

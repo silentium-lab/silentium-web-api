@@ -38,6 +38,7 @@ export default [
       {
         file: `${name}.min.js`,
         format: "iife",
+        name: "silentiumWebApi",
         plugins: [terser()],
       },
     ],

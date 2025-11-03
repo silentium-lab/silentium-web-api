@@ -27,10 +27,9 @@ declare function RequestJson($request: EventType<Partial<FetchRequestType>>, err
 declare function Elements<T extends HTMLElement>($selector: EventType<string>): EventType<T[]>;
 
 /**
- * Helps to print logs to somewhere
- * https://developer.mozilla.org/en-US/docs/Web/API/Console_API
+ * Transport for log values to console
  */
-declare function Log<T>(sourceSrc: EventType<T>, titleSrc: EventType<string>): EventType<T>;
+declare function Log<T>(group: string): TransportType;
 
 declare function Timer(delay: number): EventType<number>;
 

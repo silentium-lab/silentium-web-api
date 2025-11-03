@@ -1,19 +1,10 @@
-import { All, Event, EventType, Transport } from "silentium";
+import { Transport, TransportType } from "silentium";
 
 /**
- * Helps to print logs to somewhere
- * https://developer.mozilla.org/en-US/docs/Web/API/Console_API
+ * Transport for log values to console
  */
-export function Log<T>(
-  sourceSrc: EventType<T>,
-  titleSrc: EventType<string>,
-): EventType<T> {
-  return Event((t) => {
-    All(sourceSrc, titleSrc).event(
-      Transport(([source, title]) => {
-        console.log("LOG:", title, source);
-        t.use(source);
-      }),
-    );
+export function Log<T>(group: string): TransportType {
+  return Transport<T>((v) => {
+    console.log(group, v);
   });
 }

@@ -1,4 +1,4 @@
-import { Event, Transport, All } from 'silentium';
+import { Event, Transport } from 'silentium';
 
 function FetchedData($request, error, $abort) {
   return Event((u) => {
@@ -90,14 +90,9 @@ function Elements($selector) {
   });
 }
 
-function Log(sourceSrc, titleSrc) {
-  return Event((t) => {
-    All(sourceSrc, titleSrc).event(
-      Transport(([source, title]) => {
-        console.log("LOG:", title, source);
-        t.use(source);
-      })
-    );
+function Log(group) {
+  return Transport((v) => {
+    console.log(group, v);
   });
 }
 
