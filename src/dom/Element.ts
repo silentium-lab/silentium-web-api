@@ -1,17 +1,19 @@
 import { Event, EventType, Transport } from "silentium";
 
 /**
- * Represents a collection of elements that match a given CSS selector.
+ * Represents an element that matches a given CSS selector.
+ * If the element exists immediately, returns it.
+ * If not, waits for it to appear in the DOM.
  */
-export function Elements<T extends HTMLElement>(
+export function Element<T extends HTMLElement>(
   $selector: EventType<string>,
-): EventType<T[]> {
+): EventType<T | null> {
   return Event((t) => {
     $selector.event(
       Transport((selector) => {
-        const element = document.querySelectorAll(selector);
-        if (element.length > 0) {
-          t.use(Array.from(element) as T[]);
+        const element = document.querySelector(selector) as T | null;
+        if (element) {
+          t.use(element);
         } else {
           const targetNode = document;
           const config = {
@@ -24,30 +26,25 @@ export function Elements<T extends HTMLElement>(
           const observer = new MutationObserver((mutationsList) => {
             for (const mutation of mutationsList) {
               if (mutation.type === "childList") {
-                // Check if any added nodes match the selector or contain matching elements
+                // Check added nodes and their descendants
                 const checkNodes = (nodes: NodeList) => {
                   for (const node of Array.from(nodes)) {
                     if (node.nodeType === Node.ELEMENT_NODE) {
                       const element = node as Element;
                       if (element.matches && element.matches(selector)) {
-                        const allElements = document.querySelectorAll(selector);
-                        if (allElements.length > 0) {
-                          t.use(Array.from(allElements) as T[]);
-                          observer.disconnect();
-                          return true;
-                        }
+                        t.use(element as T);
+                        observer.disconnect();
+                        return true;
                       }
-                      // Check if this node contains matching elements
+                      // Check descendants
                       if (
                         element.querySelector &&
                         element.querySelector(selector)
                       ) {
-                        const allElements = document.querySelectorAll(selector);
-                        if (allElements.length > 0) {
-                          t.use(Array.from(allElements) as T[]);
-                          observer.disconnect();
-                          return true;
-                        }
+                        const found = element.querySelector(selector) as T;
+                        t.use(found);
+                        observer.disconnect();
+                        return true;
                       }
                     }
                   }
@@ -61,12 +58,9 @@ export function Elements<T extends HTMLElement>(
                 // Check if the mutated element now matches the selector
                 const target = mutation.target as Element;
                 if (target.matches && target.matches(selector)) {
-                  const allElements = document.querySelectorAll(selector);
-                  if (allElements.length > 0) {
-                    t.use(Array.from(allElements) as T[]);
-                    observer.disconnect();
-                    break;
-                  }
+                  t.use(target as T);
+                  observer.disconnect();
+                  break;
                 }
               }
             }
