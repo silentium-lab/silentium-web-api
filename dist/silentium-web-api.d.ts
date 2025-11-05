@@ -27,11 +27,18 @@ declare function RequestJson($request: EventType<Partial<FetchRequestType>>, err
 declare function Elements<T extends HTMLElement>($selector: EventType<string>): EventType<T[]>;
 
 /**
+ * Represents an element that matches a given CSS selector.
+ * If the element exists immediately, returns it.
+ * If not, waits for it to appear in the DOM.
+ */
+declare function Element<T extends HTMLElement>($selector: EventType<string>): EventType<T | null>;
+
+/**
  * Transport for log values to console
  */
 declare function Log<T>(group: string): TransportType;
 
 declare function Timer(delay: number): EventType<number>;
 
-export { Elements, FetchedData, Log, RequestJson, Timer };
+export { Element, Elements, FetchedData, Log, RequestJson, Timer };
 export type { FetchRequestType };

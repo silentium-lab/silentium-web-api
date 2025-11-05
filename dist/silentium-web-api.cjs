@@ -68,26 +68,117 @@ function Elements($selector) {
     $selector.event(
       silentium.Transport((selector) => {
         const element = document.querySelectorAll(selector);
-        if (element.length) {
+        if (element.length > 0) {
           t.use(Array.from(element));
         } else {
-          const targetNode = document.body;
-          const config = { childList: true, subtree: true };
+          const targetNode = document;
+          const config = {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ["class", "id"]
+          };
           const observer = new MutationObserver((mutationsList) => {
             for (const mutation of mutationsList) {
               if (mutation.type === "childList") {
-                const element2 = document.querySelectorAll(selector);
-                if (element2) {
-                  t.use(Array.from(element2));
+                const checkNodes = (nodes) => {
+                  for (const node of Array.from(nodes)) {
+                    if (node.nodeType === Node.ELEMENT_NODE) {
+                      const element2 = node;
+                      if (element2.matches && element2.matches(selector)) {
+                        const allElements = document.querySelectorAll(selector);
+                        if (allElements.length > 0) {
+                          t.use(Array.from(allElements));
+                          observer.disconnect();
+                          return true;
+                        }
+                      }
+                      if (element2.querySelector && element2.querySelector(selector)) {
+                        const allElements = document.querySelectorAll(selector);
+                        if (allElements.length > 0) {
+                          t.use(Array.from(allElements));
+                          observer.disconnect();
+                          return true;
+                        }
+                      }
+                    }
+                  }
+                  return false;
+                };
+                if (checkNodes(mutation.addedNodes)) {
+                  break;
+                }
+              } else if (mutation.type === "attributes") {
+                const target = mutation.target;
+                if (target.matches && target.matches(selector)) {
+                  const allElements = document.querySelectorAll(selector);
+                  if (allElements.length > 0) {
+                    t.use(Array.from(allElements));
+                    observer.disconnect();
+                    break;
+                  }
+                }
+              }
+            }
+          });
+          observer.observe(targetNode, config);
+        }
+      })
+    );
+  });
+}
+
+function Element($selector) {
+  return silentium.Event((t) => {
+    $selector.event(
+      silentium.Transport((selector) => {
+        const element = document.querySelector(selector);
+        if (element) {
+          t.use(element);
+        } else {
+          const targetNode = document;
+          const config = {
+            childList: true,
+            subtree: true,
+            attributes: true,
+            attributeFilter: ["class", "id"]
+          };
+          const observer = new MutationObserver((mutationsList) => {
+            for (const mutation of mutationsList) {
+              if (mutation.type === "childList") {
+                const checkNodes = (nodes) => {
+                  for (const node of Array.from(nodes)) {
+                    if (node.nodeType === Node.ELEMENT_NODE) {
+                      const element2 = node;
+                      if (element2.matches && element2.matches(selector)) {
+                        t.use(element2);
+                        observer.disconnect();
+                        return true;
+                      }
+                      if (element2.querySelector && element2.querySelector(selector)) {
+                        const found = element2.querySelector(selector);
+                        t.use(found);
+                        observer.disconnect();
+                        return true;
+                      }
+                    }
+                  }
+                  return false;
+                };
+                if (checkNodes(mutation.addedNodes)) {
+                  break;
+                }
+              } else if (mutation.type === "attributes") {
+                const target = mutation.target;
+                if (target.matches && target.matches(selector)) {
+                  t.use(target);
                   observer.disconnect();
                   break;
                 }
               }
             }
           });
-          setTimeout(() => {
-            observer.observe(targetNode, config);
-          });
+          observer.observe(targetNode, config);
         }
       })
     );
@@ -108,6 +199,7 @@ function Timer(delay) {
   });
 }
 
+exports.Element = Element;
 exports.Elements = Elements;
 exports.FetchedData = FetchedData;
 exports.Log = Log;
