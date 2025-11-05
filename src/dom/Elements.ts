@@ -29,7 +29,9 @@ export function Elements<T extends HTMLElement>(
             }
           });
 
-          observer.observe(targetNode, config);
+          setTimeout(() => {
+            observer.observe(targetNode, config);
+          });
         }
       }),
     );

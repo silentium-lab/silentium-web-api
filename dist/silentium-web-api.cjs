@@ -85,7 +85,9 @@ function Elements($selector) {
               }
             }
           });
-          observer.observe(targetNode, config);
+          setTimeout(() => {
+            observer.observe(targetNode, config);
+          });
         }
       })
     );
