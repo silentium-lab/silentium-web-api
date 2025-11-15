@@ -1,4 +1,4 @@
-import { Event, EventType, Transport, TransportType } from "silentium";
+import { Message, MessageType, Transport, TransportType } from "silentium";
 
 export interface FetchRequestType {
   baseUrl?: string;
@@ -16,14 +16,14 @@ export interface FetchRequestType {
  * https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
  */
 export function FetchedData(
-  $request: EventType<Partial<FetchRequestType>>,
+  $request: MessageType<Partial<FetchRequestType>>,
   error?: TransportType,
-  $abort?: EventType,
-): EventType<string> {
-  return Event((u) => {
+  $abort?: MessageType,
+) {
+  return Message<string>((u) => {
     const abortController = new AbortController();
     if ($abort) {
-      $abort.event(
+      $abort.to(
         Transport((abort) => {
           if (abort) {
             abortController.abort();
@@ -31,7 +31,7 @@ export function FetchedData(
         }),
       );
     }
-    $request.event(
+    $request.to(
       Transport((request) => {
         const { baseUrl, url, method, credentials, headers, body, query } =
           request;

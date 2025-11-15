@@ -3,10 +3,10 @@
 var silentium = require('silentium');
 
 function FetchedData($request, error, $abort) {
-  return silentium.Event((u) => {
+  return silentium.Message((u) => {
     const abortController = new AbortController();
     if ($abort) {
-      $abort.event(
+      $abort.to(
         silentium.Transport((abort) => {
           if (abort) {
             abortController.abort();
@@ -14,7 +14,7 @@ function FetchedData($request, error, $abort) {
         })
       );
     }
-    $request.event(
+    $request.to(
       silentium.Transport((request) => {
         const { baseUrl, url, method, credentials, headers, body, query } = request;
         let urlWithQuery;
@@ -43,8 +43,8 @@ function FetchedData($request, error, $abort) {
 }
 
 function RequestJson($request, error) {
-  return silentium.Event((t) => {
-    $request.event(
+  return silentium.Message((t) => {
+    $request.to(
       silentium.Transport((r) => {
         try {
           t.use({
@@ -64,8 +64,8 @@ function RequestJson($request, error) {
 }
 
 function Elements($selector) {
-  return silentium.Event((t) => {
-    $selector.event(
+  return silentium.Message((t) => {
+    $selector.to(
       silentium.Transport((selector) => {
         const element = document.querySelectorAll(selector);
         if (element.length > 0) {
@@ -129,8 +129,8 @@ function Elements($selector) {
 }
 
 function Element($selector) {
-  return silentium.Event((t) => {
-    $selector.event(
+  return silentium.Message((t) => {
+    $selector.to(
       silentium.Transport((selector) => {
         const element = document.querySelector(selector);
         if (element) {
@@ -192,7 +192,7 @@ function Log(group) {
 }
 
 function Timer(delay) {
-  return silentium.Event((t) => {
+  return silentium.Message((t) => {
     setTimeout(() => {
       t.use(delay);
     }, delay);

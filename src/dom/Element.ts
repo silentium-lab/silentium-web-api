@@ -1,15 +1,13 @@
-import { Event, EventType, Transport } from "silentium";
+import { Message, MessageType, Transport } from "silentium";
 
 /**
  * Represents an element that matches a given CSS selector.
  * If the element exists immediately, returns it.
  * If not, waits for it to appear in the DOM.
  */
-export function Element<T extends HTMLElement>(
-  $selector: EventType<string>,
-): EventType<T | null> {
-  return Event((t) => {
-    $selector.event(
+export function Element<T extends HTMLElement>($selector: MessageType<string>) {
+  return Message<T | null>((t) => {
+    $selector.to(
       Transport((selector) => {
         const element = document.querySelector(selector) as T | null;
         if (element) {

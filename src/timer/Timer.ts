@@ -1,7 +1,7 @@
-import { Event, EventType } from "silentium";
+import { Message } from "silentium";
 
-export function Timer(delay: number): EventType<number> {
-  return Event((t) => {
+export function Timer(delay: number) {
+  return Message<number>((t) => {
     setTimeout(() => {
       t.use(delay);
     }, delay);

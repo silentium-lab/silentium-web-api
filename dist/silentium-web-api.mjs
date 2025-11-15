@@ -1,10 +1,10 @@
-import { Event, Transport } from 'silentium';
+import { Message, Transport } from 'silentium';
 
 function FetchedData($request, error, $abort) {
-  return Event((u) => {
+  return Message((u) => {
     const abortController = new AbortController();
     if ($abort) {
-      $abort.event(
+      $abort.to(
         Transport((abort) => {
           if (abort) {
             abortController.abort();
@@ -12,7 +12,7 @@ function FetchedData($request, error, $abort) {
         })
       );
     }
-    $request.event(
+    $request.to(
       Transport((request) => {
         const { baseUrl, url, method, credentials, headers, body, query } = request;
         let urlWithQuery;
@@ -41,8 +41,8 @@ function FetchedData($request, error, $abort) {
 }
 
 function RequestJson($request, error) {
-  return Event((t) => {
-    $request.event(
+  return Message((t) => {
+    $request.to(
       Transport((r) => {
         try {
           t.use({
@@ -62,8 +62,8 @@ function RequestJson($request, error) {
 }
 
 function Elements($selector) {
-  return Event((t) => {
-    $selector.event(
+  return Message((t) => {
+    $selector.to(
       Transport((selector) => {
         const element = document.querySelectorAll(selector);
         if (element.length > 0) {
@@ -127,8 +127,8 @@ function Elements($selector) {
 }
 
 function Element($selector) {
-  return Event((t) => {
-    $selector.event(
+  return Message((t) => {
+    $selector.to(
       Transport((selector) => {
         const element = document.querySelector(selector);
         if (element) {
@@ -190,7 +190,7 @@ function Log(group) {
 }
 
 function Timer(delay) {
-  return Event((t) => {
+  return Message((t) => {
     setTimeout(() => {
       t.use(delay);
     }, delay);

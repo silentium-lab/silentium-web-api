@@ -8,7 +8,7 @@ test("AnimationFrame.test", () => {
   };
   const af = AnimationFrame();
   const g = vi.fn();
-  af.event(Transport(g));
+  af.to(Transport(g));
 
   expect(g).toHaveBeenCalledTimes(1);
 });

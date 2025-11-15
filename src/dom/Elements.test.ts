@@ -10,7 +10,7 @@ test("Elements.test", () => {
 
   const el = Elements(Of(".test"));
   const g = vi.fn();
-  el.event(Transport(g));
+  el.to(Transport(g));
 
   expect(g).toHaveBeenLastCalledWith([{ id: "mock" }]);
 });

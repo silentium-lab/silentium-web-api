@@ -1,4 +1,3 @@
-import { Of, Transport } from "silentium";
 import { Log } from "../console/Log";
 import { afterEach, expect, test, vi } from "vitest";
 
@@ -10,10 +9,8 @@ test("Log.test", () => {
   const consoleLog = vi.fn();
   vi.spyOn(console, "log").mockImplementation(consoleLog);
 
-  const g = vi.fn();
-  const $logged = Log(Of("src"), Of("title"));
-  $logged.event(Transport(g));
+  const logTransport = Log("testGroup");
+  logTransport.use("testValue");
 
-  expect(g).toHaveBeenLastCalledWith("src");
-  expect(consoleLog).toHaveBeenLastCalledWith("LOG:", "title", "src");
+  expect(consoleLog).toHaveBeenCalledWith("testGroup", "testValue");
 });

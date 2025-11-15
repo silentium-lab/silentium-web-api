@@ -11,7 +11,7 @@ test("requestJson", () => {
     }),
   );
   const g = vi.fn();
-  r.event(Transport(g));
+  r.to(Transport(g));
 
   expect(g).toHaveBeenCalledWith({
     body: '{"hello":"world"}',

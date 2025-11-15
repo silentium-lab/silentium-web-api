@@ -1,13 +1,13 @@
-import { Event, EventType, Transport } from "silentium";
+import { Message, MessageType, Transport } from "silentium";
 
 /**
  * Represents a collection of elements that match a given CSS selector.
  */
 export function Elements<T extends HTMLElement>(
-  $selector: EventType<string>,
-): EventType<T[]> {
-  return Event((t) => {
-    $selector.event(
+  $selector: MessageType<string>,
+) {
+  return Message<T[]>((t) => {
+    $selector.to(
       Transport((selector) => {
         const element = document.querySelectorAll(selector);
         if (element.length > 0) {

@@ -1,15 +1,15 @@
-import { Event, EventType, Transport, TransportType } from "silentium";
+import { Message, MessageType, Transport, TransportType } from "silentium";
 import { FetchRequestType } from "./FetchedData";
 
 /**
  * Represents a request for JSON data.
  */
 export function RequestJson(
-  $request: EventType<Partial<FetchRequestType>>,
+  $request: MessageType<Partial<FetchRequestType>>,
   error?: TransportType,
-): EventType<Partial<FetchRequestType>> {
-  return Event((t) => {
-    $request.event(
+) {
+  return Message<Partial<FetchRequestType>>((t) => {
+    $request.to(
       Transport((r) => {
         try {
           t.use({

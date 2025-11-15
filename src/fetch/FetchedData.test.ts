@@ -29,7 +29,7 @@ test("Fetched.test", async () => {
     }),
     Transport(error),
   );
-  f.event(Transport(g));
+  f.to(Transport(g));
 
   await vi.advanceTimersByTimeAsync(10);
 
