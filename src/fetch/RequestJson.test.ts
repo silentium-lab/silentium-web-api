@@ -1,4 +1,4 @@
-import { Of, Transport } from "silentium";
+import { Of, Tap } from "silentium";
 import { RequestJson } from "../fetch/RequestJson";
 import { expect, test, vi } from "vitest";
 
@@ -11,7 +11,7 @@ test("requestJson", () => {
     }),
   );
   const g = vi.fn();
-  r.to(Transport(g));
+  r.pipe(Tap(g));
 
   expect(g).toHaveBeenCalledWith({
     body: '{"hello":"world"}',

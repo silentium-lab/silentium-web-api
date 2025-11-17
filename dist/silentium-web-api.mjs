@@ -1,19 +1,19 @@
-import { Message, Transport } from 'silentium';
+import { Message, Tap } from 'silentium';
 
 function FetchedData($request, error, $abort) {
-  return Message((u) => {
+  return Message(function() {
     const abortController = new AbortController();
     if ($abort) {
-      $abort.to(
-        Transport((abort) => {
+      $abort.pipe(
+        Tap((abort) => {
           if (abort) {
             abortController.abort();
           }
         })
       );
     }
-    $request.to(
-      Transport((request) => {
+    $request.pipe(
+      Tap((request) => {
         const { baseUrl, url, method, credentials, headers, body, query } = request;
         let urlWithQuery;
         try {
@@ -32,7 +32,7 @@ function FetchedData($request, error, $abort) {
           body,
           signal: abortController.signal
         };
-        fetch(urlWithQuery.toString(), options).then((response) => response.text()).then((data) => u.use(data)).catch((error2) => {
+        fetch(urlWithQuery.toString(), options).then((response) => response.text()).then((data) => this.use(data)).catch((error2) => {
           error2?.(error2);
         });
       })
@@ -41,11 +41,11 @@ function FetchedData($request, error, $abort) {
 }
 
 function RequestJson($request, error) {
-  return Message((t) => {
-    $request.to(
-      Transport((r) => {
+  return Message(function() {
+    $request.pipe(
+      Tap((r) => {
         try {
-          t.use({
+          this.use({
             ...r,
             headers: {
               ...r.headers ?? {},
@@ -62,12 +62,12 @@ function RequestJson($request, error) {
 }
 
 function Elements($selector) {
-  return Message((t) => {
-    $selector.to(
-      Transport((selector) => {
+  return Message(function() {
+    $selector.pipe(
+      Tap((selector) => {
         const element = document.querySelectorAll(selector);
         if (element.length > 0) {
-          t.use(Array.from(element));
+          this.use(Array.from(element));
         } else {
           const targetNode = document;
           const config = {
@@ -86,7 +86,7 @@ function Elements($selector) {
                       if (element2.matches && element2.matches(selector)) {
                         const allElements = document.querySelectorAll(selector);
                         if (allElements.length > 0) {
-                          t.use(Array.from(allElements));
+                          this.use(Array.from(allElements));
                           observer.disconnect();
                           return true;
                         }
@@ -94,7 +94,7 @@ function Elements($selector) {
                       if (element2.querySelector && element2.querySelector(selector)) {
                         const allElements = document.querySelectorAll(selector);
                         if (allElements.length > 0) {
-                          t.use(Array.from(allElements));
+                          this.use(Array.from(allElements));
                           observer.disconnect();
                           return true;
                         }
@@ -111,7 +111,7 @@ function Elements($selector) {
                 if (target.matches && target.matches(selector)) {
                   const allElements = document.querySelectorAll(selector);
                   if (allElements.length > 0) {
-                    t.use(Array.from(allElements));
+                    this.use(Array.from(allElements));
                     observer.disconnect();
                     break;
                   }
@@ -127,12 +127,12 @@ function Elements($selector) {
 }
 
 function Element($selector) {
-  return Message((t) => {
-    $selector.to(
-      Transport((selector) => {
+  return Message(function() {
+    $selector.pipe(
+      Tap((selector) => {
         const element = document.querySelector(selector);
         if (element) {
-          t.use(element);
+          this.use(element);
         } else {
           const targetNode = document;
           const config = {
@@ -149,13 +149,13 @@ function Element($selector) {
                     if (node.nodeType === Node.ELEMENT_NODE) {
                       const element2 = node;
                       if (element2.matches && element2.matches(selector)) {
-                        t.use(element2);
+                        this.use(element2);
                         observer.disconnect();
                         return true;
                       }
                       if (element2.querySelector && element2.querySelector(selector)) {
                         const found = element2.querySelector(selector);
-                        t.use(found);
+                        this.use(found);
                         observer.disconnect();
                         return true;
                       }
@@ -169,7 +169,7 @@ function Element($selector) {
               } else if (mutation.type === "attributes") {
                 const target = mutation.target;
                 if (target.matches && target.matches(selector)) {
-                  t.use(target);
+                  this.use(target);
                   observer.disconnect();
                   break;
                 }
@@ -184,7 +184,7 @@ function Element($selector) {
 }
 
 function Log(group) {
-  return Transport((v) => {
+  return Tap((v) => {
     console.log(group, v);
   });
 }

@@ -1,4 +1,4 @@
-import { Message, MessageType, Transport, TransportType } from "silentium";
+import { Message, MessageType, Tap, TapType } from "silentium";
 import { FetchRequestType } from "./FetchedData";
 
 /**
@@ -6,13 +6,13 @@ import { FetchRequestType } from "./FetchedData";
  */
 export function RequestJson(
   $request: MessageType<Partial<FetchRequestType>>,
-  error?: TransportType,
+  error?: TapType,
 ) {
-  return Message<Partial<FetchRequestType>>((t) => {
-    $request.to(
-      Transport((r) => {
+  return Message<Partial<FetchRequestType>>(function () {
+    $request.pipe(
+      Tap((r) => {
         try {
-          t.use({
+          this.use({
             ...r,
             headers: {
               ...(r.headers ?? {}),

@@ -1,4 +1,4 @@
-import { Message, MessageType, Transport, TransportType } from "silentium";
+import { Message, MessageType, Tap, TapType } from "silentium";
 
 export interface FetchRequestType {
   baseUrl?: string;
@@ -17,22 +17,22 @@ export interface FetchRequestType {
  */
 export function FetchedData(
   $request: MessageType<Partial<FetchRequestType>>,
-  error?: TransportType,
+  error?: TapType,
   $abort?: MessageType,
 ) {
-  return Message<string>((u) => {
+  return Message<string>(function () {
     const abortController = new AbortController();
     if ($abort) {
-      $abort.to(
-        Transport((abort) => {
+      $abort.pipe(
+        Tap((abort) => {
           if (abort) {
             abortController.abort();
           }
         }),
       );
     }
-    $request.to(
-      Transport((request) => {
+    $request.pipe(
+      Tap((request) => {
         const { baseUrl, url, method, credentials, headers, body, query } =
           request;
         let urlWithQuery: URL;
@@ -54,7 +54,7 @@ export function FetchedData(
         };
         fetch(urlWithQuery.toString(), options)
           .then((response) => response.text())
-          .then((data) => u.use(data))
+          .then((data) => this.use(data))
           .catch((error) => {
             error?.(error);
           });

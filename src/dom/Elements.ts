@@ -1,4 +1,4 @@
-import { Message, MessageType, Transport } from "silentium";
+import { Message, MessageType, Tap } from "silentium";
 
 /**
  * Represents a collection of elements that match a given CSS selector.
@@ -6,12 +6,12 @@ import { Message, MessageType, Transport } from "silentium";
 export function Elements<T extends HTMLElement>(
   $selector: MessageType<string>,
 ) {
-  return Message<T[]>((t) => {
-    $selector.to(
-      Transport((selector) => {
+  return Message<T[]>(function () {
+    $selector.pipe(
+      Tap((selector) => {
         const element = document.querySelectorAll(selector);
         if (element.length > 0) {
-          t.use(Array.from(element) as T[]);
+          this.use(Array.from(element) as T[]);
         } else {
           const targetNode = document;
           const config = {
@@ -32,7 +32,7 @@ export function Elements<T extends HTMLElement>(
                       if (element.matches && element.matches(selector)) {
                         const allElements = document.querySelectorAll(selector);
                         if (allElements.length > 0) {
-                          t.use(Array.from(allElements) as T[]);
+                          this.use(Array.from(allElements) as T[]);
                           observer.disconnect();
                           return true;
                         }
@@ -44,7 +44,7 @@ export function Elements<T extends HTMLElement>(
                       ) {
                         const allElements = document.querySelectorAll(selector);
                         if (allElements.length > 0) {
-                          t.use(Array.from(allElements) as T[]);
+                          this.use(Array.from(allElements) as T[]);
                           observer.disconnect();
                           return true;
                         }
@@ -63,7 +63,7 @@ export function Elements<T extends HTMLElement>(
                 if (target.matches && target.matches(selector)) {
                   const allElements = document.querySelectorAll(selector);
                   if (allElements.length > 0) {
-                    t.use(Array.from(allElements) as T[]);
+                    this.use(Array.from(allElements) as T[]);
                     observer.disconnect();
                     break;
                   }

@@ -1,4 +1,4 @@
-import { Message, MessageType, Transport } from "silentium";
+import { Message, MessageType, Tap } from "silentium";
 
 /**
  * Represents an element that matches a given CSS selector.
@@ -6,12 +6,12 @@ import { Message, MessageType, Transport } from "silentium";
  * If not, waits for it to appear in the DOM.
  */
 export function Element<T extends HTMLElement>($selector: MessageType<string>) {
-  return Message<T | null>((t) => {
-    $selector.to(
-      Transport((selector) => {
+  return Message<T | null>(function () {
+    $selector.pipe(
+      Tap((selector) => {
         const element = document.querySelector(selector) as T | null;
         if (element) {
-          t.use(element);
+          this.use(element);
         } else {
           const targetNode = document;
           const config = {
@@ -30,7 +30,7 @@ export function Element<T extends HTMLElement>($selector: MessageType<string>) {
                     if (node.nodeType === Node.ELEMENT_NODE) {
                       const element = node as Element;
                       if (element.matches && element.matches(selector)) {
-                        t.use(element as T);
+                        this.use(element as T);
                         observer.disconnect();
                         return true;
                       }
@@ -40,7 +40,7 @@ export function Element<T extends HTMLElement>($selector: MessageType<string>) {
                         element.querySelector(selector)
                       ) {
                         const found = element.querySelector(selector) as T;
-                        t.use(found);
+                        this.use(found);
                         observer.disconnect();
                         return true;
                       }
@@ -56,7 +56,7 @@ export function Element<T extends HTMLElement>($selector: MessageType<string>) {
                 // Check if the mutated element now matches the selector
                 const target = mutation.target as Element;
                 if (target.matches && target.matches(selector)) {
-                  t.use(target as T);
+                  this.use(target as T);
                   observer.disconnect();
                   break;
                 }

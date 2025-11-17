@@ -1,4 +1,4 @@
-import { Of, Transport } from "silentium";
+import { Of, Tap } from "silentium";
 import { Element } from "../dom/Element";
 import { expect, test, vi } from "vitest";
 
@@ -10,7 +10,7 @@ test("Element.test", () => {
 
   const el = Element(Of(".test"));
   const g = vi.fn();
-  el.to(Transport(g));
+  el.pipe(Tap(g));
 
   expect(g).toHaveBeenLastCalledWith({ id: "mock" });
 });

@@ -6,9 +6,9 @@ import { Message } from "silentium";
  * is ready to render a new frame.
  */
 export function AnimationFrame() {
-  return Message<number>((t) => {
+  return Message<number>(function () {
     requestAnimationFrame(() => {
-      t.use(1);
+      this.use(1);
     });
   });
 }

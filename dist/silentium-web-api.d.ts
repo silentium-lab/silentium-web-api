@@ -1,5 +1,5 @@
 import * as silentium from 'silentium';
-import { MessageType, TransportType } from 'silentium';
+import { MessageType, TapType } from 'silentium';
 
 interface FetchRequestType {
     baseUrl?: string;
@@ -15,12 +15,12 @@ interface FetchRequestType {
  * https://kosukhin.github.io/patron-web-api/#/fetch/fetched
  * https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
  */
-declare function FetchedData($request: MessageType<Partial<FetchRequestType>>, error?: TransportType, $abort?: MessageType): silentium.MessageImpl<string>;
+declare function FetchedData($request: MessageType<Partial<FetchRequestType>>, error?: TapType, $abort?: MessageType): silentium.MessageImpl<string>;
 
 /**
  * Represents a request for JSON data.
  */
-declare function RequestJson($request: MessageType<Partial<FetchRequestType>>, error?: TransportType): silentium.MessageImpl<Partial<FetchRequestType>>;
+declare function RequestJson($request: MessageType<Partial<FetchRequestType>>, error?: TapType): silentium.MessageImpl<Partial<FetchRequestType>>;
 
 /**
  * Represents a collection of elements that match a given CSS selector.
@@ -37,7 +37,7 @@ declare function Element<T extends HTMLElement>($selector: MessageType<string>):
 /**
  * Transport for log values to console
  */
-declare function Log<T>(group: string): TransportType;
+declare function Log<T>(group: string): TapType;
 
 declare function Timer(delay: number): silentium.MessageImpl<number>;
 
