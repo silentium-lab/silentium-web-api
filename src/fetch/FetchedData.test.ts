@@ -1,4 +1,4 @@
-import { Of, Tap } from "silentium";
+import { Of } from "silentium";
 import { FetchedData } from "../fetch/FetchedData";
 import { afterEach, beforeEach, expect, test, vi } from "vitest";
 
@@ -27,9 +27,8 @@ test("Fetched.test", async () => {
       },
       body: JSON.stringify({ key: "value" }),
     }),
-    Tap(error),
   );
-  f.pipe(Tap(g));
+  f.then(g);
 
   await vi.advanceTimersByTimeAsync(10);
 

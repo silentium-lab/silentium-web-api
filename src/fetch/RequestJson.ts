@@ -1,18 +1,15 @@
-import { Message, MessageType, Tap, TapType } from "silentium";
+import { Message, MessageType } from "silentium";
 import { FetchRequestType } from "./FetchedData";
 
 /**
  * Represents a request for JSON data.
  */
-export function RequestJson(
-  $request: MessageType<Partial<FetchRequestType>>,
-  error?: TapType,
-) {
-  return Message<Partial<FetchRequestType>>(function () {
-    $request.pipe(
-      Tap((r) => {
+export function RequestJson($request: MessageType<Partial<FetchRequestType>>) {
+  return Message<Partial<FetchRequestType>>(
+    function RequestJsonImpl(resolve, reject) {
+      $request.then((r) => {
         try {
-          this.use({
+          resolve({
             ...r,
             headers: {
               ...(r.headers ?? {}),
@@ -21,9 +18,9 @@ export function RequestJson(
             body: JSON.stringify(r.body),
           });
         } catch {
-          error?.use(new Error("Failed to parse JSON"));
+          reject(new Error("Failed to parse JSON"));
         }
-      }),
-    );
-  });
+      });
+    },
+  );
 }

@@ -1,10 +1,8 @@
-import { Tap, TapType } from "silentium";
-
 /**
  * Transport for log values to console
  */
-export function Log<T>(group: string): TapType {
-  return Tap<T>((v) => {
+export function Log(group: string) {
+  return (v: unknown) => {
     console.log(group, v);
-  });
+  };
 }

@@ -1,6 +1,6 @@
-import { Of, Tap } from "silentium";
-import { Elements } from "../dom/Elements";
+import { Of } from "silentium";
 import { expect, test, vi } from "vitest";
+import { Elements } from "../dom/Elements";
 
 test("Elements.test", () => {
   const mockQuerySelector = vi.fn().mockReturnValue([{ id: "mock" }]);
@@ -10,7 +10,7 @@ test("Elements.test", () => {
 
   const el = Elements(Of(".test"));
   const g = vi.fn();
-  el.pipe(Tap(g));
+  el.then(g);
 
   expect(g).toHaveBeenLastCalledWith([{ id: "mock" }]);
 });

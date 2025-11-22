@@ -10,7 +10,7 @@ test("Log.test", () => {
   vi.spyOn(console, "log").mockImplementation(consoleLog);
 
   const logTransport = Log("testGroup");
-  logTransport.use("testValue");
+  logTransport("testValue");
 
   expect(consoleLog).toHaveBeenCalledWith("testGroup", "testValue");
 });

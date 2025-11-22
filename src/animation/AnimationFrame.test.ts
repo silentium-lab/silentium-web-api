@@ -1,6 +1,5 @@
-import { Tap } from "silentium";
-import { AnimationFrame } from "../animation/AnimationFrame";
 import { expect, test, vi } from "vitest";
+import { AnimationFrame } from "../animation/AnimationFrame";
 
 test("AnimationFrame.test", () => {
   global.requestAnimationFrame = (cb: FrameRequestCallback) => {
@@ -8,7 +7,7 @@ test("AnimationFrame.test", () => {
   };
   const af = AnimationFrame();
   const g = vi.fn();
-  af.pipe(Tap(g));
+  af.then(g);
 
   expect(g).toHaveBeenCalledTimes(1);
 });

@@ -1,6 +1,6 @@
-import { Of, Tap } from "silentium";
-import { RequestJson } from "../fetch/RequestJson";
+import { Of } from "silentium";
 import { expect, test, vi } from "vitest";
+import { RequestJson } from "../fetch/RequestJson";
 
 test("requestJson", () => {
   const r = RequestJson(
@@ -11,7 +11,7 @@ test("requestJson", () => {
     }),
   );
   const g = vi.fn();
-  r.pipe(Tap(g));
+  r.then(g);
 
   expect(g).toHaveBeenCalledWith({
     body: '{"hello":"world"}',
