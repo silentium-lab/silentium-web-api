@@ -32,7 +32,7 @@ declare function Elements<T extends HTMLElement>($selector: MessageType<string>)
  * If the element exists immediately, returns it.
  * If not, waits for it to appear in the DOM.
  */
-declare function Element<T extends HTMLElement>($selector: MessageType<string>): silentium.MessageRx<T | null>;
+declare function Element<T extends HTMLElement>($selector: MessageType<string>): silentium.MessageRx<T>;
 
 /**
  * Transport for log values to console

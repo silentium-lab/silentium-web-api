@@ -6,7 +6,7 @@ import { Message, MessageType } from "silentium";
  * If not, waits for it to appear in the DOM.
  */
 export function Element<T extends HTMLElement>($selector: MessageType<string>) {
-  return Message<T | null>(function ElementImpl(r) {
+  return Message<T>(function ElementImpl(r) {
     $selector.then((selector) => {
       const element = document.querySelector(selector) as T | null;
       if (element) {
