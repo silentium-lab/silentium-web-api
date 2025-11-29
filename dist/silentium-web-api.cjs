@@ -184,7 +184,7 @@ function Log(group) {
 function Timer(delay) {
   return silentium.Message((t) => {
     setTimeout(() => {
-      t.use(delay);
+      t(delay);
     }, delay);
   });
 }
