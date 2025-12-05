@@ -58,7 +58,7 @@
     }
   },
   "dependencies": {
-    "silentium": "^0.0.143",
-    "silentium-components": "^0.0.84"
+    "silentium": "^0.0.169",
+    "silentium-components": "^0.0.94"
   }
 }
