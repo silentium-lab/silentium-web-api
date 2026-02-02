@@ -57,7 +57,8 @@ function RequestJson($request) {
   );
 }
 
-function Elements($selector) {
+function Elements(_selector) {
+  const $selector = silentium.Actual(_selector);
   return silentium.Message(function ElementsImpl(r) {
     $selector.then((selector) => {
       const element = document.querySelectorAll(selector);
@@ -120,7 +121,8 @@ function Elements($selector) {
   });
 }
 
-function Element($selector) {
+function Element(_selector) {
+  const $selector = silentium.Actual(_selector);
   return silentium.Message(function ElementImpl(r) {
     $selector.then((selector) => {
       const element = document.querySelector(selector);

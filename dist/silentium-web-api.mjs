@@ -1,4 +1,4 @@
-import { Message } from 'silentium';
+import { Message, Actual } from 'silentium';
 
 function FetchedData($request, $abort) {
   return Message(function FetchedDataImpl(resolve, reject) {
@@ -55,7 +55,8 @@ function RequestJson($request) {
   );
 }
 
-function Elements($selector) {
+function Elements(_selector) {
+  const $selector = Actual(_selector);
   return Message(function ElementsImpl(r) {
     $selector.then((selector) => {
       const element = document.querySelectorAll(selector);
@@ -118,7 +119,8 @@ function Elements($selector) {
   });
 }
 
-function Element($selector) {
+function Element(_selector) {
+  const $selector = Actual(_selector);
   return Message(function ElementImpl(r) {
     $selector.then((selector) => {
       const element = document.querySelector(selector);

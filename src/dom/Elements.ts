@@ -1,11 +1,12 @@
-import { Message, MessageType } from "silentium";
+import { Actual, MaybeMessage, Message } from "silentium";
 
 /**
  * Represents a collection of elements that match a given CSS selector.
  */
 export function Elements<T extends HTMLElement>(
-  $selector: MessageType<string>,
+  _selector: MaybeMessage<string>,
 ) {
+  const $selector = Actual(_selector);
   return Message<T[]>(function ElementsImpl(r) {
     $selector.then((selector) => {
       const element = document.querySelectorAll(selector);

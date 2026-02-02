@@ -1,11 +1,14 @@
-import { Message, MessageType } from "silentium";
+import { Actual, MaybeMessage, Message } from "silentium";
 
 /**
  * Represents an element that matches a given CSS selector.
  * If the element exists immediately, returns it.
  * If not, waits for it to appear in the DOM.
  */
-export function Element<T extends HTMLElement>($selector: MessageType<string>) {
+export function Element<T extends HTMLElement>(
+  _selector: MaybeMessage<string>,
+) {
+  const $selector = Actual(_selector);
   return Message<T>(function ElementImpl(r) {
     $selector.then((selector) => {
       const element = document.querySelector(selector) as T | null;
