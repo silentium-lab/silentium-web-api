@@ -1,4 +1,4 @@
-import { Message, Actual } from 'silentium';
+import { Message, Actual, Primitive, Late, Source } from 'silentium';
 
 function FetchedData($request, $abort) {
   return Message(function FetchedDataImpl(resolve, reject) {
@@ -189,5 +189,46 @@ function Timer(delay) {
   });
 }
 
-export { Element, Elements, FetchedData, Log, RequestJson, Timer };
+function StorageRecord($name, defaultValue, storageType = "localStorage") {
+  const nameSync = Primitive($name);
+  const resultSrc = Late();
+  return Source(
+    (resolve) => {
+      resultSrc.then(resolve);
+      const storage = window[storageType];
+      $name.then((name) => {
+        window.addEventListener("storage", (e) => {
+          if (e.storageArea === storage) {
+            if (e.key === name) {
+              const newValue = e.newValue ? JSON.parse(e.newValue) : defaultValue;
+              if (newValue !== void 0 && newValue !== null) {
+                resultSrc.use(newValue);
+              }
+            }
+          }
+        });
+        if (storage[name]) {
+          try {
+            resultSrc.use(JSON.parse(storage[name]));
+          } catch {
+            console.warn(`LocalStorageRecord cant parse value ${name}`);
+          }
+        } else if (defaultValue !== void 0) {
+          resultSrc.use(defaultValue);
+        }
+      });
+    },
+    (v) => {
+      const storage = window[storageType];
+      resultSrc.use(v);
+      try {
+        storage[nameSync.primitiveWithException()] = JSON.stringify(v);
+      } catch {
+        console.warn(`LocalStorageRecord cant stringify value`);
+      }
+    }
+  );
+}
+
+export { Element, Elements, FetchedData, Log, RequestJson, StorageRecord, Timer };
 //# sourceMappingURL=silentium-web-api.js.map

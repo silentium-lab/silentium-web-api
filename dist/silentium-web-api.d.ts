@@ -41,5 +41,10 @@ declare function Log(group: string): (v: unknown) => void;
 
 declare function Timer(delay: number): silentium.MessageImpl<number>;
 
-export { Element, Elements, FetchedData, Log, RequestJson, Timer };
+/**
+ * Data representation from Storage API
+ */
+declare function StorageRecord<T = string>($name: MessageType<string>, defaultValue?: unknown, storageType?: "localStorage" | "sessionStorage"): silentium.SourceImpl<T>;
+
+export { Element, Elements, FetchedData, Log, RequestJson, StorageRecord, Timer };
 export type { FetchRequestType };

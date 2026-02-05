@@ -191,10 +191,52 @@ function Timer(delay) {
   });
 }
 
+function StorageRecord($name, defaultValue, storageType = "localStorage") {
+  const nameSync = silentium.Primitive($name);
+  const resultSrc = silentium.Late();
+  return silentium.Source(
+    (resolve) => {
+      resultSrc.then(resolve);
+      const storage = window[storageType];
+      $name.then((name) => {
+        window.addEventListener("storage", (e) => {
+          if (e.storageArea === storage) {
+            if (e.key === name) {
+              const newValue = e.newValue ? JSON.parse(e.newValue) : defaultValue;
+              if (newValue !== void 0 && newValue !== null) {
+                resultSrc.use(newValue);
+              }
+            }
+          }
+        });
+        if (storage[name]) {
+          try {
+            resultSrc.use(JSON.parse(storage[name]));
+          } catch {
+            console.warn(`LocalStorageRecord cant parse value ${name}`);
+          }
+        } else if (defaultValue !== void 0) {
+          resultSrc.use(defaultValue);
+        }
+      });
+    },
+    (v) => {
+      const storage = window[storageType];
+      resultSrc.use(v);
+      try {
+        storage[nameSync.primitiveWithException()] = JSON.stringify(v);
+      } catch {
+        console.warn(`LocalStorageRecord cant stringify value`);
+      }
+    }
+  );
+}
+
 exports.Element = Element;
 exports.Elements = Elements;
 exports.FetchedData = FetchedData;
 exports.Log = Log;
 exports.RequestJson = RequestJson;
+exports.StorageRecord = StorageRecord;
 exports.Timer = Timer;
 //# sourceMappingURL=silentium-web-api.cjs.map
