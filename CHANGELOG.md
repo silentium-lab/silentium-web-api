@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.37](https://github.com/silentium-lab/silentium-web-api/compare/v0.0.36...v0.0.37) (2026-02-05)
+
+
+### Features
+
+* storage record ([ba6a988](https://github.com/silentium-lab/silentium-web-api/commit/ba6a9881c5053e359e21dad851f8821da5f8c7e5))
+
 ### [0.0.36](https://github.com/silentium-lab/silentium-web-api/compare/v0.0.35...v0.0.36) (2026-02-02)
 
 
